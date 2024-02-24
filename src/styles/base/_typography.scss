@@ -2,14 +2,86 @@
 
 @font-face {
   font-family: $main-font;
-  src: url("../../assets/fonts/poppins.ttf") format("truetype");
-  font-style: normal;
+  src: url("../../assets/fonts/poppins-300.ttf") format("truetype");
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: $main-font;
+  src: url("../../assets/fonts/poppins-400.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: $main-font;
+  src: url("../../assets/fonts/poppins-500.ttf") format("truetype");
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: $main-font;
+  src: url("../../assets/fonts/poppins-600.ttf") format("truetype");
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: $main-font;
+  src: url("../../assets/fonts/poppins-700.ttf") format("truetype");
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: $main-font;
+  src: url("../../assets/fonts/poppins-800.ttf") format("truetype");
+	font-weight: 800;
+	font-style: normal;
 }
 
 @font-face {
   font-family: $secondary-font;
-  src: url("../../assets/fonts/rubik.ttf") format("truetype");
-  font-style: normal;
+  src: url("../../assets/fonts/rubik-300.ttf") format("truetype");
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: $secondary-font;
+  src: url("../../assets/fonts/rubik-400.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: $secondary-font;
+  src: url("../../assets/fonts/rubik-500.ttf") format("truetype");
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: $secondary-font;
+  src: url("../../assets/fonts/rubik-600.ttf") format("truetype");
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: $secondary-font;
+  src: url("../../assets/fonts/rubik-700.ttf") format("truetype");
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: $secondary-font;
+  src: url("../../assets/fonts/rubik-800.ttf") format("truetype");
+	font-weight: 800;
+	font-style: normal;
 }
 
 @font-face {

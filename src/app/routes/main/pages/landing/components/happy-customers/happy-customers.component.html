@@ -1,0 +1,23 @@
+<article class="flex items-center gap-4 mt-20">
+  <!-- TODO: Loading Skeleton -->
+  <div class="flex">
+    @for (customer of customers(); track customer.id!) {
+    <figure class="relative rounded-full size-16 -ml-6 first:ml-0">
+      <img
+        class="object-cover"
+        [ngSrc]="customer.image || ''"
+        [alt]="'happy-customer-' + customer.name"
+        fill
+      />
+    </figure>
+    }
+  </div>
+  <div class="flex flex-col gap-1">
+    <h4 class="font-semibold">Our Happy Customer</h4>
+    <div class="flex items-center gap-2 font-medium text-sm">
+      <app-star-icon class="text-amber-500 pb-1" [size]="14" />
+      <span>4,5</span>
+      <p class="opacity-70">(12.5k Review)</p>
+    </div>
+  </div>
+</article>

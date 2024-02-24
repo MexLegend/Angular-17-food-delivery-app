@@ -1,0 +1,52 @@
+<section class="flex flex-col w-full justify-center items-start pt-20">
+  <div class="flex w-full justify-between items-center">
+    <div class="flex flex-col gap-4 max-w-[420px] xl:max-w-[550px]">
+      <div
+        class="flex items-center justify-center gap-4 w-max text-primary bg-primary/10 rounded-full h-12 px-6"
+      >
+        <span class="text-sm"> More than faster </span>
+        <app-cherry-icon [size]="20" />
+      </div>
+      <h1 class="text-6xl font-bold font-rubik tracking-wide mt-8">
+        Claim Best Offer on Fast
+        <span class="text-7xl font-lobster-two italic text-primary pr-2"
+          >Food</span
+        >
+        &
+        <span class="text-7xl font-lobster-two italic text-primary"
+          >Restaurants</span
+        >
+      </h1>
+      <p class="text-balance">
+        Our job is to filling your tummy with delicious food and with fast and
+        free delivery
+      </p>
+      <div class="flex gap-4 mt-2">
+        <app-button label="Get Started" />
+        <button
+          class="group flex items-center gap-3 transition-all active:scale-95"
+        >
+          <div
+            class="flex items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary text-black group-hover:text-white size-12 transition-colors"
+          >
+            <app-play-icon [size]="16" />
+          </div>
+          <span class="font-medium">Watch Video</span>
+        </button>
+      </div>
+    </div>
+    <div class="relative w-max mx-auto">
+      <figure class="relative flex items-center justify-center size-[500px]">
+        <img
+          ngSrc="assets/images/hero-image.webp"
+          alt="hero_image"
+          fill
+          priority
+        />
+      </figure>
+      <app-hero-featured-dish />
+      <app-hero-featured-courier />
+    </div>
+  </div>
+  <app-happy-customers />
+</section>

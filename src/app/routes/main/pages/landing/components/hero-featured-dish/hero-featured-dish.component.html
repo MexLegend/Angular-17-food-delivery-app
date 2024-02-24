@@ -1,0 +1,26 @@
+<article
+  class="absolute flex items-center gap-5 right-0 bottom-0 rounded-2xl bg-white shadow-xl px-4 py-2 w-[220px]"
+>
+<!-- TODO: Loading Skeleton -->
+  <figure class="min-w-16 min-h-16 size-16 relative rounded-xl overflow-hidden">
+    <img
+      class="object-cover"
+      [ngSrc]="featuredDish()?.image || ''"
+      alt="featured_dish_image"
+      priority
+      fill=""
+    />
+  </figure>
+  <div class="flex flex-1 flex-col gap-1">
+    <h4 class="font-semibold line-clamp-2 text-sm">{{ featuredDish()?.name }}</h4>
+    <app-stars
+      [size]="1"
+      readonly
+      [initialStars]="featuredDish()?.rating || 0"
+    />
+    <h3 class="font-extrabold text-base">
+      <small class="text-primary">$</small>
+      <span>{{ featuredDish()?.price?.toFixed(2) }}</span>
+    </h3>
+  </div>
+</article>
