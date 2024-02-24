@@ -1,0 +1,30 @@
+<nav class="flex w-full h-24 pt-4">
+  <div class="flex justify-between items-center container mx-auto">
+    <div>
+      <h3 class="font-bold text-2xl">Foodeli</h3>
+    </div>
+    <ul class="flex gap-8">
+      @for (navlink of navlinks; track navlink.label) {
+      <li
+        class="flex items-center justify-center gap-1 font-medium tracking-wider transition-all hover:text-primary"
+      >
+        <a [routerLink]="navlink.link">{{ navlink.label }}</a>
+        @if (navlink.hasDropdown) {
+        <app-down-arrow-icon class="text-primary pt-1" [size]="12" />
+        }
+      </li>
+      }
+    </ul>
+    <div class="flex gap-1">
+      <button
+        class="flex items-center justify-center size-12 transition-all hover:bg-slate-100 active:scale-95 rounded-full"
+      >
+        <app-search-icon />
+      </button>
+      <app-bag-button />
+      <app-button label="Login">
+        <app-logout-icon [size]="22" />
+      </app-button>
+    </div>
+  </div>
+</nav>
