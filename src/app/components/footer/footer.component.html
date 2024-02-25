@@ -1,1 +1,53 @@
-<p>footer works!</p>
+<app-section-layout>
+  <div class="flex flex-1 w-full gap-8 pt-20">
+    <div class="flex flex-col gap-6 max-w-[350px]">
+      <app-logo />
+      <p>
+        Our job is to filling your tummy with delicious food and with fast and
+        free delivery.
+      </p>
+      <app-social-media />
+    </div>
+    <div class="flex flex-1 justify-evenly">
+      @for (section of footerSections(); track section.title; let last = $last)
+      {
+      <div class="flex flex-col flex-1 gap-6">
+        <h3 class="font-semibold text-lg">{{ section.title }}</h3>
+        <ul class="flex flex-col gap-6">
+          @for (sectionLink of section.sections; track sectionLink.label) {
+          <li>
+            <a
+              [routerLink]="sectionLink.link"
+              class="transition-colors duration-100 hover:text-primary hover:underline"
+            >
+              {{ sectionLink.label }}
+            </a>
+          </li>
+          }
+        </ul>
+        @if (last) {
+        <form action="">
+          <label
+            htmlFor="newsletter-input"
+            class="flex items-center justify-center gap-6 h-14 mt-4 rounded-full px-4 border border-slate-400 transition-colors active:border-primary focus-within:border-primary"
+          >
+            <input
+              id="newsletter-input"
+              type="text"
+              class="border-none shadow-none outline-none"
+              placeholder="Email Address"
+              required
+            />
+            <button
+              class="flex items-center justify-center size-10 rounded-full transition-color duration-200 hover:bg-primary hover:text-white active:scale-95"
+            >
+              <app-send-icon />
+            </button>
+          </label>
+        </form>
+        }
+      </div>
+      }
+    </div>
+  </div>
+</app-section-layout>

@@ -15,6 +15,7 @@ import { SearchIconComponent } from 'app/icons/search-icon.component';
 import { BagButtonComponent } from '../bag-button/bag-button.component';
 import { ButtonComponent } from '@components/button/button.component';
 import { NgClass } from '@angular/common';
+import { LogoComponent } from '@components/logo/logo.component';
 
 @Component({
   selector: 'app-navbar',
@@ -23,6 +24,7 @@ import { NgClass } from '@angular/common';
     NgClass,
     RouterLink,
     RouterLinkActive,
+    LogoComponent,
     ButtonComponent,
     LogoutIconComponent,
     BagButtonComponent,

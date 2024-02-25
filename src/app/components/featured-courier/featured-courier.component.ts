@@ -1,17 +1,20 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, WritableSignal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, WritableSignal, signal } from '@angular/core';
 import { ICourier } from '@models/user.interface';
 import { PhoneIconComponent } from 'app/icons/phone-icon.component';
 
 @Component({
-  selector: 'app-hero-featured-courier',
+  selector: 'app-featured-courier',
   standalone: true,
   imports: [NgOptimizedImage, PhoneIconComponent],
-  templateUrl: './hero-featured-courier.component.html',
-  styleUrl: './hero-featured-courier.component.scss',
+  templateUrl: './featured-courier.component.html',
+  styleUrl: './featured-courier.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeroFeaturedCourierComponent {
+export class FeaturedCourierComponent {
+
+  @Input() customClasses?: string;
+
   readonly featuredCourier: WritableSignal<ICourier | null> = signal({
     image: 'assets/images/courier-icon.png',
     email: 'riachard@gmail.com',

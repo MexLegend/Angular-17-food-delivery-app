@@ -1,1 +1,23 @@
-<p>customer-review works!</p>
+<article class="flex flex-1 flex-col gap-6">
+  <p class="max-w-[500px] text-balance">“{{ review.comment }}”.</p>
+  <div
+    class="flex items-center flex-1 gap-3 cursor-pointer transition-transform duration-200 active:scale-95"
+  >
+    <figure class="relative rounded-full size-16 -ml-6 first:ml-0">
+      <img
+        class="object-cover"
+        [ngSrc]="review.user.image || ''"
+        [alt]="'customer-review-' + review.user.name"
+        fill
+      />
+    </figure>
+    <div>
+      <h4 class="font-semibold">{{ review.user.name }}</h4>
+      <span class="opacity-70 text-sm font-medium">Food Enthusiast</span>
+    </div>
+  </div>
+  <div class="flex flex-1 gap-3 cursor-pointer transition-transform duration-200 active:scale-95">
+    <app-stars [initialStars]="review.rating" readonly [size]="1" />
+    <span class="text-sm font-medium">{{ review.rating }}</span>
+  </div>
+</article>

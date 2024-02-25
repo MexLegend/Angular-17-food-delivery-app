@@ -2,8 +2,8 @@ import { INavLink } from '@models/navlink.interface';
 
 export const NAV_LINKS: INavLink[] = [
   {
-    label: 'Why Foodeli?',
-    link: 'why_foodeli',
+    label: 'Why ExTaste?',
+    link: 'why_extaste',
   },
   {
     label: 'Services',
