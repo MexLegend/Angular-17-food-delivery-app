@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, WritableSignal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, WritableSignal, signal } from '@angular/core';
 import { ICourier } from '@models/user.interface';
 import { PhoneIconComponent } from 'app/icons/phone-icon.component';
 
@@ -9,6 +9,7 @@ import { PhoneIconComponent } from 'app/icons/phone-icon.component';
   imports: [NgOptimizedImage, PhoneIconComponent],
   templateUrl: './hero-featured-courier.component.html',
   styleUrl: './hero-featured-courier.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeroFeaturedCourierComponent {
   readonly featuredCourier: WritableSignal<ICourier | null> = signal({

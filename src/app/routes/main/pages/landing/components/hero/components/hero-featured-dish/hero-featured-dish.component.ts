@@ -1,7 +1,7 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, Input, WritableSignal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, WritableSignal, signal } from '@angular/core';
 import { StarsComponent } from '@components/stars/stars.component';
-import { IMenuItem } from '@models/menu.interfaz';
+import { IMenuItem } from '@models/menu.interface';
 
 @Component({
   selector: 'app-hero-featured-dish',
@@ -9,6 +9,7 @@ import { IMenuItem } from '@models/menu.interfaz';
   imports: [NgOptimizedImage, StarsComponent],
   templateUrl: './hero-featured-dish.component.html',
   styleUrl: './hero-featured-dish.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeroFeaturedDishComponent {
   readonly featuredDish: WritableSignal<IMenuItem | null> = signal({

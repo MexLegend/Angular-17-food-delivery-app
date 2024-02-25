@@ -1,0 +1,33 @@
+<app-section-layout customClasses="items-center !flex-row">
+  <div class="relative flex flex-1">
+    <figure class="relative w-full mx-auto max-w-[320px] xl:max-w-[450px]">
+      <img
+        class="object-fill"
+        ngSrc="assets/images/reviews-image.webp"
+        width="653"
+        height="701"
+        alt="reviews_image"
+        priority
+      />
+    </figure>
+    <div
+      class="absolute flex flex-col gap-2 p-4 -bottom-12 right-24 bg-white rounded-2xl shadow-xl"
+    >
+      <h4 class="font-semibold">Our Reviewers</h4>
+      <app-reviewers />
+    </div>
+  </div>
+  <div class="flex flex-col gap-6 flex-1">
+    <app-section-layout-heading
+      class="text-left max-w-[500px]"
+      title="What Our Customers Say About Us"
+      subtitle="What they say"
+    />
+    <p class="max-w-[500px] text-balance">
+      “ExTaste is the best. Besides the many and delicious meals, the service is
+      also very good, especially in the very fast delivey. I highly recommend
+      ExTaste to you”.
+    </p>
+    <app-customer-review />
+  </div>
+</app-section-layout>
