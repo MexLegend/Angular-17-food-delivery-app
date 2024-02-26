@@ -1,13 +1,19 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
+  Output,
   WritableSignal,
   signal,
 } from '@angular/core';
 import { MenuItemBoxComponent } from '@components/menu-item-box/menu-item-box.component';
 import { MENU } from '@constants/menu.constant';
 import { IMenuItem } from '@models/menu.interface';
-import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
+import {
+  CarouselComponent,
+  CarouselModule,
+  OwlOptions,
+} from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-menu-carousel',
@@ -18,6 +24,8 @@ import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuCarouselComponent {
+  @Output() carouselRef: EventEmitter<CarouselComponent> = new EventEmitter();
+
   readonly activeMenu: WritableSignal<IMenuItem[]> = signal([...MENU]);
   readonly customOptions: OwlOptions = {
     mouseDrag: true,
@@ -25,7 +33,7 @@ export class MenuCarouselComponent {
     pullDrag: true,
     dots: false,
     navSpeed: 700,
-    margin: 8,
+    margin: 20,
     autoWidth: true,
     nav: true,
   };

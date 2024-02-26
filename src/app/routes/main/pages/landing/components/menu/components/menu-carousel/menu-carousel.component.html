@@ -1,7 +1,12 @@
 <article class="flex flex-1 w-full">
-  <owl-carousel-o class="w-full" [options]="customOptions">
+  <owl-carousel-o
+    #carousel
+    class="w-full"
+    [options]="customOptions"
+    (initialized)="carouselRef.emit(carousel)"
+  >
     @for (menuItem of activeMenu(); track menuItem.id) {
-    <ng-template carouselSlide [id]="'menu-item-' + menuItem.id!">
+    <ng-template carouselSlide [id]="'menu-item-' + menuItem.id!" [width]="280">
       <app-menu-item-box [menuItem]="menuItem" />
     </ng-template>
     }

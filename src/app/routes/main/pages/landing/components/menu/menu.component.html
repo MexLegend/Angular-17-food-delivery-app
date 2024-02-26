@@ -5,9 +5,26 @@
       title="Menu That Always Makes You Fall In Love"
       subtitle="Our menu"
     />
+    <div class="flex items-center justify-center gap-6">
+      <button
+        class="flex items-center justify-center size-10 rounded-full transition-all bg-slate-200 hover:bg-primary hover:text-white active:scale-95"
+        (click)="menuCarouselRef()?.prev()"
+      >
+        <app-down-arrow-icon [size]="16" class="rotate-90" />
+      </button>
+      <button
+        class="flex items-center justify-center size-10 rounded-full transition-all bg-slate-200 hover:bg-primary hover:text-white active:scale-95"
+        (click)="menuCarouselRef()?.next()"
+      >
+        <app-down-arrow-icon [size]="16" class="-rotate-90" />
+      </button>
+    </div>
   </div>
   <div class="flex w-full gap-12">
-    <app-menu-sidebar class="flex w-full max-w-[250px]"/>
-    <app-menu-carousel class="flex flex-1"/>
+    <app-menu-sidebar class="flex w-full max-w-[250px]" />
+    <app-menu-carousel
+      class="flex flex-1 w-full max-w-[calc(100%-250px)]"
+      (carouselRef)="menuCarouselRef.set($event)"
+    />
   </div>
 </app-section-layout>
