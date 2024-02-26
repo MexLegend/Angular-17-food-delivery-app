@@ -1,0 +1,18 @@
+<button
+  class="flex items-center justify-start w-full gap-4 rounded-full p-3 transition-all duration-200 hover:bg-primary hover:text-white active:scale-95"
+  [ngClass]="{ 'shadow-md shadow-primary/30': isActive }"
+  (click)="handleClick.emit()"
+>
+  <figure
+    class="relative flex items-center justify-center size-9 rounded-full bg-white"
+  >
+    <img
+      class="bg-origin-padding p-[6px]"
+      [ngSrc]="category.icon"
+      [alt]="'category-icon-' + category.name"
+      fill
+      priority
+    />
+  </figure>
+  <span class="font-medium line-clamp-1">{{ category.name }}</span>
+</button>

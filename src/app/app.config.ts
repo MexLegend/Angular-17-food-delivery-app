@@ -1,9 +1,10 @@
 import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
 import { provideRouter, withViewTransitions } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { UserService } from '@coreServices/common/user.service';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 const loadUserFromStorage = (userService: UserService) => {
   return () => userService.loadUserFromStorage();
@@ -12,6 +13,7 @@ const loadUserFromStorage = (userService: UserService) => {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withViewTransitions()),
+    provideAnimations(),
     provideHttpClient(withInterceptors([])),
     {
       provide: APP_INITIALIZER,

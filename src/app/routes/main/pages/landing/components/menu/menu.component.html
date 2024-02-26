@@ -1,7 +1,13 @@
-<app-section-layout>
-  <app-section-layout-heading
-    class="text-left max-w-[500px]"
-    title="Menu That Always Makes You Fall In Love"
-    subtitle="Our menu"
-  />
+<app-section-layout customClasses="gap-10">
+  <div class="flex w-full justify-between items-end">
+    <app-section-layout-heading
+      class="text-left max-w-[500px]"
+      title="Menu That Always Makes You Fall In Love"
+      subtitle="Our menu"
+    />
+  </div>
+  <div class="flex w-full gap-12">
+    <app-menu-sidebar class="flex w-full max-w-[250px]"/>
+    <app-menu-carousel class="flex flex-1"/>
+  </div>
 </app-section-layout>

@@ -1,0 +1,5 @@
+<article class="flex flex-col w-full max-h-[320px] gap-1 overflow-auto pr-4">
+  @for (category of categories(); track category.id) {
+  <app-category-box [category]="category" class="" />
+  }
+</article>

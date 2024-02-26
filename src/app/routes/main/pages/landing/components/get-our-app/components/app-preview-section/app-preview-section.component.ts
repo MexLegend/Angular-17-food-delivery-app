@@ -1,5 +1,10 @@
 import { NgClass, NgOptimizedImage } from '@angular/common';
-import { Component, WritableSignal, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  WritableSignal,
+  signal,
+} from '@angular/core';
 import { DownArrowIconComponent } from 'app/icons/down-arrow-icon.component';
 import { LocationIconComponent } from 'app/icons/location-icon.component';
 import { ICategory, IMenuItem } from '@models/menu.interface';
@@ -17,6 +22,7 @@ import { MENU } from '@constants/menu.constant';
   ],
   templateUrl: './app-preview-section.component.html',
   styleUrl: './app-preview-section.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppPreviewSectionComponent {
   readonly featuredCategories: WritableSignal<ICategory[]> = signal([

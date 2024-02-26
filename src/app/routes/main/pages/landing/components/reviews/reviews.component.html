@@ -18,15 +18,19 @@
     </div>
   </div>
   <div class="flex flex-1">
-    <div class="flex flex-col gap-6 max-w-[500px]">
+    <div class="flex flex-col gap-6 w-full max-w-[500px]">
       <app-section-layout-heading
         class="text-left"
         title="What Our Customers Say About Us"
         subtitle="What they say"
       />
-      @for (review of reviews(); track review.id) {
-      <app-customer-review [review]="review" />
-      }
+      <owl-carousel-o class="w-full" [options]="customOptions">
+        @for (review of reviews(); track review.id; let index = $index) {
+        <ng-template carouselSlide [id]="'review-'+ review.id!">
+          <app-customer-review [review]="review" />
+        </ng-template>
+        }
+      </owl-carousel-o>
     </div>
   </div>
 </app-section-layout>

@@ -1,0 +1,26 @@
+<div class="relative flex rounded-3xl overflow-hidden w-[280px] h-[300px]">
+  <img
+    [ngSrc]="menuItem.image"
+    [alt]="'landing-menu-image-' + menuItem.name"
+    [title]="menuItem.name"
+    fill
+  />
+  <div
+    class="relative flex p-6 w-full h-full items-end justify-start before:absolute before:-bottom-10 before:left-0 before:w-full before:h-full before:bg-gradient-to-t before:from-black before:to-transparent before:to-10"
+  >
+    <div class="z-10 flex flex-col gap-2 w-full h-max">
+      <h3 class="text-white line-clamp-1 text-lg">{{ menuItem.name }}</h3>
+      <h2 class="font-semibold text-xl text-white">
+        <span class="text-amber-400 text-base">$</span>
+        {{ menuItem.price.toFixed(2) }}
+      </h2>
+      <a
+        [owlRouterLink]="['menu-item', menuItem.id]"
+        class="flex items-center gap-3 text-white/90 text-xs"
+      >
+        Order Now
+        <app-down-arrow-icon class="-rotate-90" [size]="12" />
+      </a>
+    </div>
+  </div>
+</div>
