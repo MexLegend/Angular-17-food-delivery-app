@@ -1,5 +1,8 @@
 <button
-  class="flex items-center justify-center gap-2 bg-primary text-white rounded-full px-8 h-12 transition-all hover:bg-primary/70 active:scale-95"
+  class="flex items-center justify-center gap-2 bg-primary text-white rounded-full px-8 h-12 transition-all hover:bg-primary/70 active:scale-95 {{
+    customClasses
+  }}"
+  [type]="buttonType"
 >
   <ng-content />
   {{ label }}

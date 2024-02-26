@@ -17,7 +17,7 @@ import { GetOurAppComponent } from './components/get-our-app/get-our-app.compone
     GetOurAppComponent,
     FooterComponent,
   ],
-  templateUrl: './landing.component.html',
-  styleUrl: './landing.component.scss',
+  templateUrl: './landing-page.component.html',
+  styleUrl: './landing-page.component.scss',
 })
-export class LandingComponent {}
+export class LandingPageComponent {}

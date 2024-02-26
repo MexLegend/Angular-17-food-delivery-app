@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LandingComponent } from './landing.component';
+import { AuthFormHeaderComponent } from './auth-form-header.component';
 
-describe('LandingComponent', () => {
-  let component: LandingComponent;
-  let fixture: ComponentFixture<LandingComponent>;
+describe('AuthFormHeaderComponent', () => {
+  let component: AuthFormHeaderComponent;
+  let fixture: ComponentFixture<AuthFormHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LandingComponent]
+      imports: [AuthFormHeaderComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(LandingComponent);
+    fixture = TestBed.createComponent(AuthFormHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

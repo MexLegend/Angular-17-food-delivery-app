@@ -1,0 +1,26 @@
+<section class="flex flex-col gap-10 flex-1 justify-center items-center">
+  <app-auth-form-header title="Sign in to your account" />
+  <div
+    class="flex flex-col gap-6 items-center justify-center bg-white border rounded-2xl shadow-lg p-6 py-12 sm:px-12 w-full sm:w-[480px]"
+  >
+    <form
+      [formGroup]="formGroup"
+      (ngSubmit)="login()"
+      class="flex flex-col gap-6 w-full items-center justify-center"
+    >
+      <app-auth-form class="w-full" />
+      <app-button
+        label="Sign In"
+        class="w-full mt-4"
+        customClasses="w-full font-medium"
+        buttonType="submit"
+      />
+      <a
+        class="opacity-80 hover:text-primary font-medium hover:underline text-sm cursor-pointer"
+      >
+        Forgot password?
+      </a>
+    </form>
+    <app-social-auth-actions class="w-full" />
+  </div>
+</section>

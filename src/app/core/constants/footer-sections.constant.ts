@@ -27,7 +27,7 @@ export const FOOTER_SECTIONS: IFooterSection[] = [
     sections: [
       {
         label: 'Why Extaste?',
-        link: 'why_extaste',
+        link: 'why-extaste',
       },
       {
         label: 'Partner With Us',
@@ -60,7 +60,7 @@ export const FOOTER_SECTIONS: IFooterSection[] = [
       },
       {
         label: 'Contact Us',
-        link: 'contact_us',
+        link: 'contact-us',
       },
       {
         label: 'Accessibilty',
@@ -77,7 +77,7 @@ export const FOOTER_SECTIONS: IFooterSection[] = [
       },
       {
         label: 'We’d love to hear from you',
-        link: 'get_in_touch',
+        link: 'get-in-touch',
       }
     ],
   },

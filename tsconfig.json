@@ -7,6 +7,7 @@
     "paths": {
       "@constants/*": ["app/core/constants/*"],
       "@models/*": ["app/core/models/*"],
+      "@helpers/*": ["app/core/helpers/*"],
       "@coreServices/*": ["app/core/services/*"],
       "@components/*": ["app/components/*"],
       "@routes/*": ["app/routes/*"],

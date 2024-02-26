@@ -8,13 +8,42 @@
   <div class="flex justify-between items-center container mx-auto">
     <app-logo />
     <ul class="flex gap-8">
-      @for (navlink of navlinks; track navlink.label) {
+      @for (navMenuItem of navMenu; track navMenuItem.label) {
       <li
-        class="flex items-center justify-center gap-1 font-medium tracking-wider transition-all hover:text-primary"
+        class="flex items-center justify-center gap-1 font-medium tracking-wider"
       >
-        <a [routerLink]="navlink.link">{{ navlink.label }}</a>
-        @if (navlink.hasDropdown) {
-        <app-down-arrow-icon class="text-primary pt-1" [size]="12" />
+        @if (navMenuItem.subMenu) {
+        <app-dropdown-menu [label]="navMenuItem.label">
+          @for (navSubMenuItem of navMenuItem.subMenu; track
+          navSubMenuItem.label) {
+          <app-nav-menu-item [navMenuItem]="navSubMenuItem">
+            <app-check-icon />
+          </app-nav-menu-item>
+          }
+        </app-dropdown-menu>
+        } @else if (navMenuItem.label === "Menu") {
+        <app-dropdown-menu [label]="navMenuItem.label" [size]="300">
+          @for (categoryMenuItem of categoriesMenu(); track
+          categoryMenuItem.label) {
+          <app-nav-menu-item [navMenuItem]="categoryMenuItem">
+            <figure class="relative flex items-center justify-center size-6">
+              <img
+                [ngSrc]="categoryMenuItem.icon!"
+                [alt]="'category-menu-icon-' + categoryMenuItem.label"
+                fill
+                priority
+              />
+            </figure>
+          </app-nav-menu-item>
+          }
+        </app-dropdown-menu>
+        } @else {
+        <a
+          [routerLink]="navMenuItem.link"
+          class="transition-colors hover:text-primary"
+        >
+          {{ navMenuItem.label }}
+        </a>
         }
       </li>
       }
@@ -26,7 +55,7 @@
         <app-search-icon />
       </button>
       <app-bag-button />
-      <app-button class="ml-2" label="Login">
+      <app-button class="ml-2" label="Login" routerLink="auth">
         <app-logout-icon [size]="22" />
       </app-button>
     </div>
