@@ -10,7 +10,7 @@
     <button
       type="button"
       class="flex flex-1 gap-2 items-center justify-center rounded-xl transition-all hover:bg-slate-100 active:scale-95 border border-slate-300 py-3"
-      (click)="login()"
+      (click)="googleAuthAction()"
     >
       <app-google-icon />
       <p class="text-sm font-medium">Google</p>
@@ -18,7 +18,7 @@
     <button
       type="button"
       class="flex flex-1 gap-2 items-center justify-center rounded-xl transition-all hover:bg-slate-100 active:scale-95 border border-slate-300 py-3"
-      (click)="login()"
+      (click)="githubAuthAction()"
     >
       <app-github-icon />
       <p class="text-sm font-medium">Github</p>

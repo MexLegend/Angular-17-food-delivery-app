@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from '@coreServices/common/auth.service';
 
 @Component({
   selector: 'app-auth-layout',
@@ -8,4 +9,10 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './auth-layout.component.html',
   styleUrl: './auth-layout.component.scss',
 })
-export class AuthLayoutComponent {}
+export class AuthLayoutComponent {
+  private readonly _authService = inject(AuthService);
+
+  constructor() {
+    this._authService.initGoogleLogin();
+  }
+}

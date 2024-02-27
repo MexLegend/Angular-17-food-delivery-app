@@ -4,6 +4,7 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { FormValidators } from '@helpers/form-validators';
 import { IRegisterForm } from '@models/auth.interface';
@@ -24,6 +25,7 @@ import { FormSubmitDirective } from 'app/core/directives/form-submit.directive';
     ReactiveFormsModule,
     ControlErrorsDirective,
     FormSubmitDirective,
+    RouterLink,
   ],
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss',

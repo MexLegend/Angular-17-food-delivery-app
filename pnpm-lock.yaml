@@ -32,6 +32,9 @@ dependencies:
   '@angular/router':
     specifier: ^17.1.0
     version: 17.2.2(@angular/common@17.2.2)(@angular/core@17.2.2)(@angular/platform-browser@17.2.2)(rxjs@7.8.1)
+  angular-oauth2-oidc:
+    specifier: ^17.0.1
+    version: 17.0.1(@angular/common@17.2.2)(@angular/core@17.2.2)
   ngx-owl-carousel-o:
     specifier: ^17.0.0
     version: 17.0.0(@angular/common@17.2.2)(@angular/core@17.2.2)(rxjs@7.8.1)
@@ -2841,6 +2844,17 @@ packages:
       require-from-string: 2.0.2
       uri-js: 4.4.1
     dev: true
+
+  /angular-oauth2-oidc@17.0.1(@angular/common@17.2.2)(@angular/core@17.2.2):
+    resolution: {integrity: sha512-Yl4It9zFsYmoNS73sUvNJstbMW1x73ejKonzXLgU4XnSuBCt/0x8PnY5R3mHX4ZC/WmXBqQ/RfFwClrYW9Ywcg==}
+    peerDependencies:
+      '@angular/common': '>=14.0.0'
+      '@angular/core': '>=14.0.0'
+    dependencies:
+      '@angular/common': 17.2.2(@angular/core@17.2.2)(rxjs@7.8.1)
+      '@angular/core': 17.2.2(rxjs@7.8.1)(zone.js@0.14.4)
+      tslib: 2.6.2
+    dev: false
 
   /ansi-colors@4.1.3:
     resolution: {integrity: sha512-/6w/C21Pm1A7aZitlI5Ni/2J6FFQN8i1Cvz3kHABAAbw93v/NlvKdVOqz7CCWz/3iv/JplRSEEZ83XION15ovw==}

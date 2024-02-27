@@ -39,17 +39,21 @@
         />
       </section>
       <app-button
-        label="Sign In"
+        label="Sign Up"
         class="w-full mt-4"
         customClasses="w-full font-medium"
         buttonType="submit"
       />
-      <a
-        class="opacity-80 hover:text-primary font-medium hover:underline text-sm cursor-pointer"
-      >
-        Have an Account?
-      </a>
+      <p class="font-medium text-sm">
+        Have an account?
+        <a
+          class="opacity-80 hover:text-primary hover:underline cursor-pointer"
+          routerLink="/auth/login"
+        >
+          Sign In
+        </a>
+      </p>
     </form>
-    <app-social-auth-actions class="w-full" />
+    <app-social-auth-actions class="w-full" authAction="REGISTER" />
   </div>
 </section>

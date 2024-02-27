@@ -15,11 +15,22 @@
         customClasses="w-full font-medium"
         buttonType="submit"
       />
+      @if (formError && formError === 'WRONG_CREDENTIALS') {
       <a
-        class="opacity-80 hover:text-primary font-medium hover:underline text-sm cursor-pointer"
+        class="opacity-80 text-primary font-medium hover:underline text-sm cursor-pointer"
       >
         Forgot password?
       </a>
+      }
+      <p class="font-medium text-sm">
+        Don't have an account?
+        <a
+          class="opacity-80 hover:text-primary hover:underline cursor-pointer"
+          routerLink="/auth/register"
+        >
+          Sign Up
+        </a>
+      </p>
     </form>
     <app-social-auth-actions class="w-full" />
   </div>

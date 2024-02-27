@@ -12,6 +12,8 @@ import { FormValidators } from '@helpers/form-validators';
 import { ControlErrorsDirective } from 'app/core/directives/control-error.directive';
 import { FormSubmitDirective } from 'app/core/directives/form-submit.directive';
 import { AuthFormHeaderComponent } from '@routes/auth/components/auth-form-header/auth-form-header.component';
+import { RouterLink } from '@angular/router';
+import { AUTH_FORM_ERROR } from '@models/auth-form-error.enum';
 
 @Component({
   selector: 'app-login-page',
@@ -24,6 +26,7 @@ import { AuthFormHeaderComponent } from '@routes/auth/components/auth-form-heade
     ReactiveFormsModule,
     ControlErrorsDirective,
     FormSubmitDirective,
+    RouterLink,
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
@@ -33,6 +36,7 @@ export class LoginPageComponent {
   private readonly _fb = inject(NonNullableFormBuilder);
 
   formGroup!: FormGroup<ILoginForm>;
+  formError?: AUTH_FORM_ERROR;
 
   constructor() {
     this.initForm();

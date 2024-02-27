@@ -5,6 +5,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { UserService } from '@coreServices/common/user.service';
+import { provideOAuthClient } from 'angular-oauth2-oidc';
 
 const loadUserFromStorage = (userService: UserService) => {
   return () => userService.loadUserFromStorage();
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withViewTransitions()),
     provideAnimations(),
     provideHttpClient(withInterceptors([])),
+    provideOAuthClient(),
     {
       provide: APP_INITIALIZER,
       useFactory: loadUserFromStorage,
