@@ -7,63 +7,34 @@ import {
 } from '@angular/core';
 import { Observable, delay, finalize, of } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
-import {
-  AuthConfig,
-  OAuthService,
-  OAuthSuccessEvent,
-} from 'angular-oauth2-oidc';
 import { UserService } from './user.service';
 import { IUser } from '@models/user.interface';
 import { KEY_STORAGE } from '@models/storage.enum';
-import { ILoginData } from '@models/auth.interface';
+import {
+  AuthActionType,
+  IFacebookDialogResponse,
+  ILoginData,
+  IRegisterData,
+} from '@models/auth.interface';
+import { accounts } from 'google-one-tap';
 import { environment } from '@environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly _oAuthService = inject(OAuthService);
   private readonly _storageService = inject(LocalStorageService);
   private readonly _userService = inject(UserService);
   private readonly _$isLoading: WritableSignal<boolean> = signal(false);
+  private readonly _$googleButtonWrapper: WritableSignal<HTMLButtonElement | null> =
+    signal(null);
 
   getIsLoading(): Signal<boolean> {
     return this._$isLoading.asReadonly();
   }
 
-  initGoogleLogin() {
-    const config: AuthConfig = {
-      issuer: 'https://accounts.google.com',
-      strictDiscoveryDocumentValidation: false,
-      clientId: environment.GOOGLE_CLIENT_ID,
-      redirectUri: window.location.origin + '/',
-      scope: 'openid profile email',
-    };
-
-    this._oAuthService.configure(config);
-    this._oAuthService.setupAutomaticSilentRefresh();
-    this._oAuthService.loadDiscoveryDocumentAndTryLogin();
-
-    // Suscribirse al evento de token recibido
-    this._oAuthService.events.subscribe((event) => {
-      console.log(event);
-
-      if (event instanceof OAuthSuccessEvent) {
-        // Se ejecuta cuando el inicio de sesión es exitoso
-        // Aquí puedes ejecutar las acciones que deseas después del inicio de sesión exitoso
-
-        // Obtener información del usuario (puede variar dependiendo de tu implementación)
-        const userInfo = this._oAuthService.getIdentityClaims() as IUser;
-
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
-
-        // Configurar la información del usuario en el servicio UserService
-        // this._userService.setUserData(userInfo);
-
-        // Guardar la información del usuario en el almacenamiento local
-        // this._storageService.setItem(KEY_STORAGE.DATA_USER, userInfo);
-      }
-    });
+  stopIsLoading(): void {
+    return this._$isLoading.set(false);
   }
 
   login(loginData: ILoginData): Observable<IUser> {
@@ -82,27 +53,150 @@ export class AuthService {
     );
   }
 
-  googleLogin(): void {
+  register(registerData: IRegisterData): Observable<IUser> {
     this._$isLoading.set(true);
 
-    this._oAuthService.initLoginFlow();
+    const user: IUser = {
+      name: 'PrograMarc',
+      email: registerData.email,
+    };
+
+    return of(user).pipe(
+      delay(1000),
+      finalize(() => {
+        this._$isLoading.set(false);
+      })
+    );
   }
 
-  googleRegister(): void {
-    console.log('Google Register');
+  initGoogleAuthConfig(authAction: AuthActionType) {
+    const googleAccounts: accounts = google.accounts;
+
+    this._initializeGoogleSignIn(authAction, googleAccounts);
+    this._renderGoogleSignInButton(googleAccounts);
   }
 
-  githubLogin(): void {
-    console.log('Github Login');
+  private _initializeGoogleSignIn(
+    authAction: AuthActionType,
+    googleAccounts: accounts
+  ) {
+    googleAccounts.id.initialize({
+      client_id: environment.GOOGLE_CLIENT_ID,
+      callback: ({ credential }) => {
+        if (authAction === 'LOGIN') {
+          this.googleLogin(credential).subscribe();
+        } else {
+          this.googleRegister(credential).subscribe();
+        }
+      },
+    });
   }
 
-  githubRegister(): void {
-    console.log('Github Register');
+  private _renderGoogleSignInButton(googleAccounts: accounts) {
+    const googleLoginWrapper = document.getElementById('gbtn') as HTMLElement;
+
+    googleAccounts.id.renderButton(
+      document.getElementById('gbtn') as HTMLElement,
+      {}
+    );
+
+    const googleLoginButton = googleLoginWrapper.querySelector(
+      'div[role=button]'
+    ) as HTMLButtonElement;
+
+    this._$googleButtonWrapper.set(googleLoginButton);
+  }
+
+  openGoogleAuthDialog(): void {
+    this._$googleButtonWrapper()?.click();
+  }
+
+  googleLogin(credential: string): Observable<IUser> {
+    this._$isLoading.set(true);
+    console.log('Google Login: ', credential);
+
+    const user: IUser = {
+      name: 'PrograMarc',
+      email: 'armandolarae97@gmail.com',
+    };
+
+    return of(user).pipe(
+      delay(1000),
+      finalize(() => {
+        this._$isLoading.set(false);
+      })
+    );
+  }
+
+  googleRegister(credential: string): Observable<IUser> {
+    this._$isLoading.set(true);
+    console.log('Google Register: ', credential);
+
+    const user: IUser = {
+      name: 'PrograMarc',
+      email: 'armandolarae97@gmail.com',
+    };
+
+    return of(user).pipe(
+      delay(1000),
+      finalize(() => {
+        this._$isLoading.set(false);
+      })
+    );
+  }
+
+  openFacebookAuthDialog(authAction: AuthActionType): void {
+    FB.login(
+      async (result: IFacebookDialogResponse) => {
+        const accessToken = result.authResponse.accessToken;
+
+        if (authAction === 'LOGIN') {
+          this.facebookLogin(accessToken).subscribe();
+        } else {
+          this.facebookRegister(accessToken).subscribe();
+        }
+      },
+      { scope: 'email' }
+    );
+  }
+
+  facebookLogin(credential: string): Observable<IUser> {
+    this._$isLoading.set(true);
+    console.log('Facebook Login: ', credential);
+
+    const user: IUser = {
+      name: 'PrograMarc',
+      email: 'armandolarae97@gmail.com',
+    };
+
+    return of(user).pipe(
+      delay(1000),
+      finalize(() => {
+        this._$isLoading.set(false);
+      })
+    );
+  }
+
+  facebookRegister(credential: string): Observable<IUser> {
+    this._$isLoading.set(true);
+    console.log('Facebook Register: ', credential);
+
+    const user: IUser = {
+      name: 'PrograMarc',
+      email: 'armandolarae97@gmail.com',
+    };
+
+    return of(user).pipe(
+      delay(1000),
+      finalize(() => {
+        this._$isLoading.set(false);
+      })
+    );
   }
 
   logout(): Observable<void> {
     return new Observable((observer) => {
-      this._oAuthService.logOut();
+      FB.logout();
       this._storageService.removeItem(KEY_STORAGE.DATA_USER);
       this._userService.setUserData(null);
       observer.next();

@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, OnDestroy, effect, inject, untracked } from '@angular/core';
 import {
   FormGroup,
   NonNullableFormBuilder,
@@ -6,8 +7,9 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
+import { AuthService } from '@coreServices/common/auth.service';
 import { FormValidators } from '@helpers/form-validators';
-import { IRegisterForm } from '@models/auth.interface';
+import { IRegisterData, IRegisterForm } from '@models/auth.interface';
 import { AuthFormHeaderComponent } from '@routes/auth/components/auth-form-header/auth-form-header.component';
 import { AuthFormComponent } from '@routes/auth/components/auth-form/auth-form.component';
 import { SocialAuthActionsComponent } from '@routes/auth/components/social-auth-actions/social-auth-actions.component';
@@ -26,21 +28,38 @@ import { FormSubmitDirective } from 'app/core/directives/form-submit.directive';
     ControlErrorsDirective,
     FormSubmitDirective,
     RouterLink,
+    NgClass
   ],
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss',
 })
-export class RegisterPageComponent {
+export class RegisterPageComponent implements OnDestroy {
   private readonly _fb = inject(NonNullableFormBuilder);
+  private readonly _authService = inject(AuthService);
+  readonly $isLoading = this._authService.getIsLoading();
 
-  formGroup!: FormGroup<IRegisterForm>;
+  form!: FormGroup<IRegisterForm>;
 
   constructor() {
     this.initForm();
+
+    effect(() => {
+      this.$isLoading()
+        ? untracked(() => {
+            this.form.disable();
+          })
+        : untracked(() => {
+            this.form.enable({ emitEvent: false });
+          });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this._authService.stopIsLoading();
   }
 
   initForm(): void {
-    this.formGroup = this._fb.group<IRegisterForm>({
+    this.form = this._fb.group<IRegisterForm>({
       name: this._fb.control('', {
         validators: [FormValidators.required('Enter the name')],
       }),
@@ -64,10 +83,9 @@ export class RegisterPageComponent {
   }
 
   register() {
-    const errors = this.formGroup.controls.email.errors;
-
-    errors
-      ? console.log({ errors })
-      : console.log(this.formGroup.getRawValue());
+    if (this.form.valid) {
+      const registerData: IRegisterData = this.form.getRawValue();
+      this._authService.register(registerData).subscribe((resp) => {});
+    }
   }
 }

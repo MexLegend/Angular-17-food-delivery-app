@@ -1,37 +1,40 @@
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   Input,
+  OnInit,
+  Signal,
   inject,
 } from '@angular/core';
 import { AuthService } from '@coreServices/common/auth.service';
-import { GithubIconComponent } from 'app/icons/github-icon.component';
+import { AuthActionType } from '@models/auth.interface';
+import { FacebookBlueIconComponent } from 'app/icons/facebook-blue-icon.component';
 import { GoogleIconComponent } from 'app/icons/google-icon.component';
-
-type AuthActionType = 'LOGIN' | 'REGISTER';
 
 @Component({
   selector: 'app-social-auth-actions',
   standalone: true,
-  imports: [GoogleIconComponent, GithubIconComponent],
+  imports: [GoogleIconComponent, FacebookBlueIconComponent, NgClass],
   templateUrl: './social-auth-actions.component.html',
   styleUrl: './social-auth-actions.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SocialAuthActionsComponent {
+export class SocialAuthActionsComponent implements OnInit {
   @Input() authAction: AuthActionType = 'LOGIN';
 
   private readonly _authService = inject(AuthService);
+  readonly $isLoading: Signal<boolean> = this._authService.getIsLoading();
 
-  googleAuthAction() {
-    this.authAction === 'LOGIN'
-      ? this._authService.googleLogin()
-      : this._authService.googleRegister();
+  ngOnInit(): void {
+    this._authService.initGoogleAuthConfig(this.authAction);
   }
 
-  githubAuthAction() {
-    this.authAction === 'LOGIN'
-      ? this._authService.githubLogin()
-      : this._authService.githubRegister();
+  openGoogleAuthDialog() {
+    this._authService.openGoogleAuthDialog();
+  }
+
+  openFacebookAuthDialog() {
+    this._authService.openFacebookAuthDialog(this.authAction);
   }
 }

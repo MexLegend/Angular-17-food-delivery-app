@@ -1,5 +1,7 @@
 import { FormControl } from '@angular/forms';
 
+export type AuthActionType = 'LOGIN' | 'REGISTER';
+
 export interface ILoginForm {
   email: FormControl<string>;
   password: FormControl<string>;
@@ -24,4 +26,18 @@ export interface IRegisterData {
   phone?: string;
   password: string;
   repeatPassword: string;
+}
+
+export interface IFacebookDialogResponse {
+  authResponse: IFacebookAuthResponse;
+  status: string;
+}
+
+export interface IFacebookAuthResponse {
+  accessToken: string;
+  data_access_expiration_time: number;
+  expiresIn: number;
+  graphDomain: string;
+  signedRequest: string;
+  userID: string;
 }
