@@ -30,11 +30,18 @@ export class SocialAuthActionsComponent implements OnInit {
     this._authService.initGoogleAuthConfig(this.authAction);
   }
 
-  openGoogleAuthDialog() {
-    this._authService.openGoogleAuthDialog();
+  authenticateByGoogle() {
+    this._authService.authenticateByGoogle();
   }
 
-  openFacebookAuthDialog() {
-    this._authService.openFacebookAuthDialog(this.authAction);
+  authenticateByFacebook() {
+    this._authService.authenticateByFacebook(this.authAction).subscribe({
+      next: (userData) => {
+        this._authService.authenticateUser(userData);
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
   }
 }

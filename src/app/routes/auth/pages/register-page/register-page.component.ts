@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { AuthService } from '@coreServices/common/auth.service';
 import { FormValidators } from '@helpers/form-validators';
+import { AUTH_FORM_ERROR } from '@models/auth-form-error.enum';
 import { IRegisterData, IRegisterForm } from '@models/auth.interface';
 import { AuthFormHeaderComponent } from '@routes/auth/components/auth-form-header/auth-form-header.component';
 import { AuthFormComponent } from '@routes/auth/components/auth-form/auth-form.component';
@@ -28,7 +29,7 @@ import { FormSubmitDirective } from 'app/core/directives/form-submit.directive';
     ControlErrorsDirective,
     FormSubmitDirective,
     RouterLink,
-    NgClass
+    NgClass,
   ],
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss',
@@ -39,6 +40,7 @@ export class RegisterPageComponent implements OnDestroy {
   readonly $isLoading = this._authService.getIsLoading();
 
   form!: FormGroup<IRegisterForm>;
+  formError?: AUTH_FORM_ERROR;
 
   constructor() {
     this.initForm();
@@ -82,10 +84,17 @@ export class RegisterPageComponent implements OnDestroy {
     });
   }
 
-  register() {
+  signUp() {
     if (this.form.valid) {
       const registerData: IRegisterData = this.form.getRawValue();
-      this._authService.register(registerData).subscribe((resp) => {});
+      this._authService.signUp(registerData).subscribe({
+        next: (userData) => {
+          this._authService.authenticateUser(userData);
+        },
+        error: (err: AUTH_FORM_ERROR) => {
+          this.formError = err;
+        },
+      });
     }
   }
 }

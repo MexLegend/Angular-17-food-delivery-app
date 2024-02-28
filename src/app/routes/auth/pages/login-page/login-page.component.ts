@@ -83,10 +83,17 @@ export class LoginPageComponent implements OnDestroy {
     });
   }
 
-  login() {
+  signIn() {
     if (this.form.valid) {
       const loginData: ILoginData = this.form.getRawValue();
-      this._authService.login(loginData).subscribe((resp) => {});
+      this._authService.signIn(loginData).subscribe({
+        next: (userData) => {
+          this._authService.authenticateUser(userData);
+        },
+        error: (err: AUTH_FORM_ERROR) => {
+          this.formError = err;
+        },
+      });
     }
   }
 }

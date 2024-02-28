@@ -18,16 +18,23 @@ import {
 } from '@models/auth.interface';
 import { accounts } from 'google-one-tap';
 import { environment } from '@environments/environment.development';
+import { Router } from '@angular/router';
+import { BaseApiService } from '@models/base-api-service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService extends BaseApiService {
+  private readonly _router = inject(Router);
   private readonly _storageService = inject(LocalStorageService);
   private readonly _userService = inject(UserService);
   private readonly _$isLoading: WritableSignal<boolean> = signal(false);
   private readonly _$googleButtonWrapper: WritableSignal<HTMLButtonElement | null> =
     signal(null);
+
+  constructor() {
+    super('auth');
+  }
 
   getIsLoading(): Signal<boolean> {
     return this._$isLoading.asReadonly();
@@ -37,7 +44,7 @@ export class AuthService {
     return this._$isLoading.set(false);
   }
 
-  login(loginData: ILoginData): Observable<IUser> {
+  signIn(loginData: ILoginData): Observable<IUser> {
     this._$isLoading.set(true);
 
     const user: IUser = {
@@ -51,9 +58,11 @@ export class AuthService {
         this._$isLoading.set(false);
       })
     );
+
+    return this.post('signin');
   }
 
-  register(registerData: IRegisterData): Observable<IUser> {
+  signUp(registerData: IRegisterData): Observable<IUser> {
     this._$isLoading.set(true);
 
     const user: IUser = {
@@ -67,6 +76,24 @@ export class AuthService {
         this._$isLoading.set(false);
       })
     );
+
+    return this.post('signup');
+  }
+
+  logout(): Observable<void> {
+    return new Observable((observer) => {
+      FB.logout();
+      this._storageService.removeItem(KEY_STORAGE.DATA_USER);
+      this._userService.setUserData(null);
+      observer.next();
+      observer.complete();
+    });
+  }
+
+  authenticateUser(userData: IUser): void {
+    this._userService.setUserData(userData);
+    this._storageService.setItem(KEY_STORAGE.DATA_USER, userData);
+    this._router.navigateByUrl('/');
   }
 
   initGoogleAuthConfig(authAction: AuthActionType) {
@@ -84,34 +111,34 @@ export class AuthService {
       client_id: environment.GOOGLE_CLIENT_ID,
       callback: ({ credential }) => {
         if (authAction === 'LOGIN') {
-          this.googleLogin(credential).subscribe();
+          this.googleSignIn(credential).subscribe();
         } else {
-          this.googleRegister(credential).subscribe();
+          this.googleSignUp(credential).subscribe();
         }
       },
     });
   }
 
   private _renderGoogleSignInButton(googleAccounts: accounts) {
-    const googleLoginWrapper = document.getElementById('gbtn') as HTMLElement;
+    const googleSignInWrapper = document.getElementById('gbtn') as HTMLElement;
 
     googleAccounts.id.renderButton(
       document.getElementById('gbtn') as HTMLElement,
       {}
     );
 
-    const googleLoginButton = googleLoginWrapper.querySelector(
+    const googleSignInButton = googleSignInWrapper.querySelector(
       'div[role=button]'
     ) as HTMLButtonElement;
 
-    this._$googleButtonWrapper.set(googleLoginButton);
+    this._$googleButtonWrapper.set(googleSignInButton);
   }
 
-  openGoogleAuthDialog(): void {
+  authenticateByGoogle(): void {
     this._$googleButtonWrapper()?.click();
   }
 
-  googleLogin(credential: string): Observable<IUser> {
+  googleSignIn(credential: string): Observable<IUser> {
     this._$isLoading.set(true);
     console.log('Google Login: ', credential);
 
@@ -126,9 +153,11 @@ export class AuthService {
         this._$isLoading.set(false);
       })
     );
+
+    return this.post('google/signin');
   }
 
-  googleRegister(credential: string): Observable<IUser> {
+  googleSignUp(credential: string): Observable<IUser> {
     this._$isLoading.set(true);
     console.log('Google Register: ', credential);
 
@@ -143,24 +172,37 @@ export class AuthService {
         this._$isLoading.set(false);
       })
     );
+
+    return this.post('google/signup');
   }
 
-  openFacebookAuthDialog(authAction: AuthActionType): void {
-    FB.login(
-      async (result: IFacebookDialogResponse) => {
-        const accessToken = result.authResponse.accessToken;
+  authenticateByFacebook(authAction: AuthActionType): Observable<IUser> {
+    return new Observable((observer) => {
+      FB.login(
+        async (result: IFacebookDialogResponse) => {
+          const accessToken = result.authResponse.accessToken;
+          let authObservable: Observable<IUser>;
 
-        if (authAction === 'LOGIN') {
-          this.facebookLogin(accessToken).subscribe();
-        } else {
-          this.facebookRegister(accessToken).subscribe();
-        }
-      },
-      { scope: 'email' }
-    );
+          if (authAction === 'LOGIN') {
+            authObservable = this.facebookSignIn(accessToken);
+          } else {
+            authObservable = this.facebookSignUp(accessToken);
+          }
+
+          authObservable.subscribe({
+            next: (user) => {
+              observer.next(user);
+              observer.complete();
+            },
+            error: (error) => observer.error(error),
+          });
+        },
+        { scope: 'email' }
+      );
+    });
   }
 
-  facebookLogin(credential: string): Observable<IUser> {
+  facebookSignIn(credential: string): Observable<IUser> {
     this._$isLoading.set(true);
     console.log('Facebook Login: ', credential);
 
@@ -175,9 +217,11 @@ export class AuthService {
         this._$isLoading.set(false);
       })
     );
+
+    return this.post('facebook/signin');
   }
 
-  facebookRegister(credential: string): Observable<IUser> {
+  facebookSignUp(credential: string): Observable<IUser> {
     this._$isLoading.set(true);
     console.log('Facebook Register: ', credential);
 
@@ -192,15 +236,7 @@ export class AuthService {
         this._$isLoading.set(false);
       })
     );
-  }
 
-  logout(): Observable<void> {
-    return new Observable((observer) => {
-      FB.logout();
-      this._storageService.removeItem(KEY_STORAGE.DATA_USER);
-      this._userService.setUserData(null);
-      observer.next();
-      observer.complete();
-    });
+    return this.post('facebook/signup');
   }
 }
