@@ -19,15 +19,17 @@ import {
 } from '@models/auth.interface';
 import { accounts } from 'google-one-tap';
 import { environment } from '@environments/environment.development';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseApiService } from '@models/base-api-service';
 import { IAuthError } from '@models/error.interface';
+import { AUTH_REDIRECT } from '@constants/auth-redirect.constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService extends BaseApiService {
   private readonly _router = inject(Router);
+  private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _ngZone = inject(NgZone);
   private readonly _storageService = inject(LocalStorageService);
   private readonly _userService = inject(UserService);
@@ -104,13 +106,13 @@ export class AuthService extends BaseApiService {
     });
   }
 
-  // TODO: Fix Console Warinings ->
-  // Navigation triggered outside Angular zone, did you forget to call 'ngZone.run()'?
-
   authenticateUser(userData: IUser): void {
+    const redirectUrl =
+      this._activatedRoute.snapshot.queryParams[AUTH_REDIRECT];
+
     this._userService.setUserData(userData);
     this._storageService.setItem(KEY_STORAGE.DATA_USER, userData);
-    this._router.navigateByUrl('/');
+    this._router.navigateByUrl(redirectUrl || '/');
   }
 
   initGoogleAuthConfig(authAction: AuthActionType): void {

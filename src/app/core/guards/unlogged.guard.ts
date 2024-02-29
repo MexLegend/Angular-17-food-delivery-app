@@ -9,7 +9,7 @@ export const unloggedGuard: CanActivateFn = (route, state) => {
   const userData = userService.getUserData();
 
   if (userData()) {
-    return router.parseUrl('/user');
+    return router.navigateByUrl(router.url);
   } else {
     return true;
   }
