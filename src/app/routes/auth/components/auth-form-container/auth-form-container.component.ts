@@ -4,6 +4,7 @@ import { SocialAuthActionsComponent } from '../social-auth-actions/social-auth-a
 import { AuthService } from '@coreServices/common/auth.service';
 import { IAuthError } from '@models/error.interface';
 import { AuthFormErrorComponent } from '../auth-form-error/auth-form-error.component';
+import { AuthActionType } from '@models/auth.interface';
 
 @Component({
   selector: 'app-auth-form-container',
@@ -14,6 +15,7 @@ import { AuthFormErrorComponent } from '../auth-form-error/auth-form-error.compo
 })
 export class AuthFormContainerComponent {
   @Input({ required: true }) title!: string;
+  @Input() authAction: AuthActionType = 'LOGIN';
 
   private readonly _authService = inject(AuthService);
   readonly $authError: Signal<IAuthError | null> =

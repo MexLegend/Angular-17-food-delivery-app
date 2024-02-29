@@ -1,5 +1,6 @@
 import {
   Injectable,
+  NgZone,
   Signal,
   WritableSignal,
   inject,
@@ -27,6 +28,7 @@ import { IAuthError } from '@models/error.interface';
 })
 export class AuthService extends BaseApiService {
   private readonly _router = inject(Router);
+  private readonly _ngZone = inject(NgZone);
   private readonly _storageService = inject(LocalStorageService);
   private readonly _userService = inject(UserService);
   private readonly _$isLoading: WritableSignal<boolean> = signal(false);
@@ -102,6 +104,9 @@ export class AuthService extends BaseApiService {
     });
   }
 
+  // TODO: Fix Console Warinings ->
+  // Navigation triggered outside Angular zone, did you forget to call 'ngZone.run()'?
+
   authenticateUser(userData: IUser): void {
     this._userService.setUserData(userData);
     this._storageService.setItem(KEY_STORAGE.DATA_USER, userData);
@@ -122,20 +127,22 @@ export class AuthService extends BaseApiService {
     googleAccounts.id.initialize({
       client_id: environment.GOOGLE_CLIENT_ID,
       callback: ({ credential: token }) => {
-        let authObservable: Observable<IUser>;
+        this._ngZone.run(() => {
+          let authObservable: Observable<IUser>;
 
-        if (authAction === 'LOGIN') {
-          authObservable = this.googleSignIn(token);
-        } else {
-          authObservable = this.googleSignUp(token);
-        }
+          if (authAction === 'LOGIN') {
+            authObservable = this.googleSignIn(token);
+          } else {
+            authObservable = this.googleSignUp(token);
+          }
 
-        authObservable.subscribe({
-          next: (user) => {
-            this._googleAuthSubject.next(user);
-            this._googleAuthSubject.complete();
-          },
-          error: (error) => this._googleAuthSubject.error(error),
+          authObservable.subscribe({
+            next: (user) => {
+              this._googleAuthSubject.next(user);
+              this._googleAuthSubject.complete();
+            },
+            error: (error) => this._googleAuthSubject.error(error),
+          });
         });
       },
     });
@@ -201,27 +208,29 @@ export class AuthService extends BaseApiService {
 
   authenticateByFacebook(authAction: AuthActionType): Observable<IUser> {
     return new Observable((observer) => {
-      FB.login(
-        async (result: IFacebookDialogResponse) => {
-          const token = result.authResponse.accessToken;
-          let authObservable: Observable<IUser>;
+      this._ngZone.run(() => {
+        FB.login(
+          async (result: IFacebookDialogResponse) => {
+            const token = result.authResponse.accessToken;
+            let authObservable: Observable<IUser>;
 
-          if (authAction === 'LOGIN') {
-            authObservable = this.facebookSignIn(token);
-          } else {
-            authObservable = this.facebookSignUp(token);
-          }
+            if (authAction === 'LOGIN') {
+              authObservable = this.facebookSignIn(token);
+            } else {
+              authObservable = this.facebookSignUp(token);
+            }
 
-          authObservable.subscribe({
-            next: (user) => {
-              observer.next(user);
-              observer.complete();
-            },
-            error: (error) => observer.error(error),
-          });
-        },
-        { scope: 'email' }
-      );
+            authObservable.subscribe({
+              next: (user) => {
+                observer.next(user);
+                observer.complete();
+              },
+              error: (error) => observer.error(error),
+            });
+          },
+          { scope: 'email' }
+        );
+      });
     });
   }
 

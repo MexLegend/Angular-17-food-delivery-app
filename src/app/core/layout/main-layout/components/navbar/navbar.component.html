@@ -26,12 +26,13 @@
           @for (categoryMenuItem of categoriesMenu(); track
           categoryMenuItem.label) {
           <app-nav-menu-item [navMenuItem]="categoryMenuItem">
-            <figure class="relative flex items-center justify-center size-6">
+            <figure class="block relative size-6">
               <img
+                class="absolute w-full h-full inset-0 object-contain"
                 [ngSrc]="categoryMenuItem.icon!"
                 [alt]="'category-menu-icon-' + categoryMenuItem.label"
-                fill
-                priority
+                height="24"
+                width="24"
               />
             </figure>
           </app-nav-menu-item>
