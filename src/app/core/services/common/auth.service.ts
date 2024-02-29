@@ -154,7 +154,7 @@ export class AuthService extends BaseApiService {
       })
     );
 
-    return this.post('google/signin');
+    return this.post('google/signin', { credential });
   }
 
   googleSignUp(credential: string): Observable<IUser> {

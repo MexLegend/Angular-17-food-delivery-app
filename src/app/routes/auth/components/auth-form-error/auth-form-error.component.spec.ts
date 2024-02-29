@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthFormHeaderComponent } from './auth-form-header.component';
+import { AuthFormErrorComponent } from './auth-form-error.component';
 
-describe('AuthFormHeaderComponent', () => {
-  let component: AuthFormHeaderComponent;
-  let fixture: ComponentFixture<AuthFormHeaderComponent>;
+describe('AuthFormErrorComponent', () => {
+  let component: AuthFormErrorComponent;
+  let fixture: ComponentFixture<AuthFormErrorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuthFormHeaderComponent]
+      imports: [AuthFormErrorComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(AuthFormHeaderComponent);
+    fixture = TestBed.createComponent(AuthFormErrorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

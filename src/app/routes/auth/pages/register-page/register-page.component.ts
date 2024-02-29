@@ -9,22 +9,22 @@ import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { AuthService } from '@coreServices/common/auth.service';
 import { FormValidators } from '@helpers/form-validators';
-import { AUTH_FORM_ERROR } from '@models/auth-form-error.enum';
+import { IAuthError } from '@models/error.interface';
 import { IRegisterData, IRegisterForm } from '@models/auth.interface';
-import { AuthFormHeaderComponent } from '@routes/auth/components/auth-form-header/auth-form-header.component';
 import { AuthFormComponent } from '@routes/auth/components/auth-form/auth-form.component';
-import { SocialAuthActionsComponent } from '@routes/auth/components/social-auth-actions/social-auth-actions.component';
 import { ControlErrorsDirective } from 'app/core/directives/control-error.directive';
 import { FormSubmitDirective } from 'app/core/directives/form-submit.directive';
+import { AuthFormErrorComponent } from '@routes/auth/components/auth-form-error/auth-form-error.component';
+import { AuthFormContainerComponent } from '@routes/auth/components/auth-form-container/auth-form-container.component';
 
 @Component({
   selector: 'app-register-page',
   standalone: true,
   imports: [
-    AuthFormHeaderComponent,
+    AuthFormContainerComponent,
     ButtonComponent,
-    SocialAuthActionsComponent,
     AuthFormComponent,
+    AuthFormErrorComponent,
     ReactiveFormsModule,
     ControlErrorsDirective,
     FormSubmitDirective,
@@ -40,7 +40,7 @@ export class RegisterPageComponent implements OnDestroy {
   readonly $isLoading = this._authService.getIsLoading();
 
   form!: FormGroup<IRegisterForm>;
-  formError?: AUTH_FORM_ERROR;
+  formError?: IAuthError;
 
   constructor() {
     this.initForm();
@@ -91,7 +91,7 @@ export class RegisterPageComponent implements OnDestroy {
         next: (userData) => {
           this._authService.authenticateUser(userData);
         },
-        error: (err: AUTH_FORM_ERROR) => {
+        error: (err: IAuthError) => {
           this.formError = err;
         },
       });
