@@ -6,9 +6,9 @@ export const unloggedGuard: CanActivateFn = (route, state) => {
   const userService = inject(UserService);
   const router = inject(Router);
 
-  const userData = userService.getUserData();
+  const isLoggedIn = userService.isLoggedIn();
 
-  if (userData()) {
+  if (isLoggedIn) {
     return router.navigateByUrl(router.url);
   } else {
     return true;

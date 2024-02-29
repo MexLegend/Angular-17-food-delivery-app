@@ -24,6 +24,10 @@ export class UserService {
     return this._$user.asReadonly();
   }
 
+  isLoggedIn(): boolean {
+    return !!this._$user();
+  }
+
   loadUserFromStorage() {
     const userFromStorage = this._storageService.getItem<IUser>(
       KEY_STORAGE.DATA_USER

@@ -7,6 +7,7 @@ import {
   ViewChild,
   WritableSignal,
   computed,
+  inject,
   signal,
 } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -22,6 +23,9 @@ import { CATEGORIES } from '@constants/categories.constant';
 import { NavMenuItemComponent } from './components/nav-menu-item/nav-menu-item.component';
 import { INavMenuItem } from '@models/nav-menu-item.interface';
 import { CheckIconComponent } from 'app/icons/check-icon.component';
+import { UserService } from '@coreServices/common/user.service';
+import { UserMenuComponent } from './components/user-menu/user-menu.component';
+import { IUser } from '@models/user.interface';
 
 @Component({
   selector: 'app-navbar',
@@ -34,11 +38,12 @@ import { CheckIconComponent } from 'app/icons/check-icon.component';
     ButtonComponent,
     DropdownMenuComponent,
     NavMenuItemComponent,
+    UserMenuComponent,
     LogoutIconComponent,
     BagButtonComponent,
     SearchIconComponent,
     CheckIconComponent,
-    NgOptimizedImage
+    NgOptimizedImage,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
@@ -46,6 +51,9 @@ import { CheckIconComponent } from 'app/icons/check-icon.component';
 })
 export class NavbarComponent {
   @ViewChild('navbar', { static: false }) navbar?: ElementRef<HTMLElement>;
+
+  private readonly _userService = inject(UserService);
+  readonly userData: Signal<IUser | null> = this._userService.getUserData();
 
   readonly navMenu = [...NAV_MENU];
   readonly categoriesMenu: Signal<INavMenuItem[]> = computed(() => {
@@ -56,6 +64,7 @@ export class NavbarComponent {
       icon: category.icon,
     }));
   });
+
   readonly isScrolling: WritableSignal<boolean> = signal(false);
 
   @HostListener('window:scroll')

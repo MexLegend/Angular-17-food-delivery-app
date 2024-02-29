@@ -7,9 +7,9 @@ export const loggedGuard: CanActivateFn = (route, state) => {
   const userService = inject(UserService);
   const router = inject(Router);
 
-  const userData = userService.getUserData();
+  const isLoggedIn = userService.isLoggedIn();
 
-  if (!userData()) {
+  if (!isLoggedIn) {
     return router.navigate(['auth'], {
       queryParams: { [AUTH_REDIRECT]: state.url },
     });
