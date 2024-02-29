@@ -11,6 +11,7 @@ import { AuthService } from '@coreServices/common/auth.service';
 import { AuthActionType } from '@models/auth.interface';
 import { FacebookBlueIconComponent } from 'app/icons/facebook-blue-icon.component';
 import { GoogleIconComponent } from 'app/icons/google-icon.component';
+import { IAuthError } from '../../../../core/models/error.interface';
 
 @Component({
   selector: 'app-social-auth-actions',
@@ -31,7 +32,14 @@ export class SocialAuthActionsComponent implements OnInit {
   }
 
   authenticateByGoogle() {
-    this._authService.authenticateByGoogle();
+    this._authService.authenticateByGoogle().subscribe({
+      next: (userData) => {
+        this._authService.authenticateUser(userData);
+      },
+      error: (error: IAuthError) => {
+        this._authService.setAuthError(error);
+      },
+    });
   }
 
   authenticateByFacebook() {
@@ -39,8 +47,8 @@ export class SocialAuthActionsComponent implements OnInit {
       next: (userData) => {
         this._authService.authenticateUser(userData);
       },
-      error(err) {
-        console.error(err);
+      error: (error: IAuthError) => {
+        this._authService.setAuthError(error);
       },
     });
   }

@@ -5,9 +5,6 @@
     class="flex flex-col gap-6 w-full items-center justify-center"
   >
     <app-auth-form class="w-full" />
-    @if (formError && formError.httpError !== 'WRONG_CREDENTIALS') {
-    <app-auth-form-error [error]="formError" />
-    }
     <app-button
       label="Sign In"
       class="w-full mt-4"

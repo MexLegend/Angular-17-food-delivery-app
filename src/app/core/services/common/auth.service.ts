@@ -5,7 +5,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Observable, delay, finalize, of } from 'rxjs';
+import { Observable, Subject, delay, finalize, of } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
 import { UserService } from './user.service';
 import { IUser } from '@models/user.interface';
@@ -20,6 +20,7 @@ import { accounts } from 'google-one-tap';
 import { environment } from '@environments/environment.development';
 import { Router } from '@angular/router';
 import { BaseApiService } from '@models/base-api-service';
+import { IAuthError } from '@models/error.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,9 @@ export class AuthService extends BaseApiService {
   private readonly _storageService = inject(LocalStorageService);
   private readonly _userService = inject(UserService);
   private readonly _$isLoading: WritableSignal<boolean> = signal(false);
+  private readonly _$authError: WritableSignal<IAuthError | null> =
+    signal(null);
+  private readonly _googleAuthSubject: Subject<IUser> = new Subject();
   private readonly _$googleButtonWrapper: WritableSignal<HTMLButtonElement | null> =
     signal(null);
 
@@ -42,6 +46,14 @@ export class AuthService extends BaseApiService {
 
   stopIsLoading(): void {
     return this._$isLoading.set(false);
+  }
+
+  getAuthError(): Signal<IAuthError | null> {
+    return this._$authError.asReadonly();
+  }
+
+  setAuthError(authError: IAuthError): void {
+    return this._$authError.set(authError);
   }
 
   signIn(loginData: ILoginData): Observable<IUser> {
@@ -96,25 +108,35 @@ export class AuthService extends BaseApiService {
     this._router.navigateByUrl('/');
   }
 
-  initGoogleAuthConfig(authAction: AuthActionType) {
+  initGoogleAuthConfig(authAction: AuthActionType): void {
     const googleAccounts: accounts = google.accounts;
 
-    this._initializeGoogleSignIn(authAction, googleAccounts);
+    this._initializeGoogleSignIn(googleAccounts, authAction);
     this._renderGoogleSignInButton(googleAccounts);
   }
 
   private _initializeGoogleSignIn(
-    authAction: AuthActionType,
-    googleAccounts: accounts
-  ) {
+    googleAccounts: accounts,
+    authAction: AuthActionType
+  ): void {
     googleAccounts.id.initialize({
       client_id: environment.GOOGLE_CLIENT_ID,
-      callback: ({ credential }) => {
+      callback: ({ credential: token }) => {
+        let authObservable: Observable<IUser>;
+
         if (authAction === 'LOGIN') {
-          this.googleSignIn(credential).subscribe();
+          authObservable = this.googleSignIn(token);
         } else {
-          this.googleSignUp(credential).subscribe();
+          authObservable = this.googleSignUp(token);
         }
+
+        authObservable.subscribe({
+          next: (user) => {
+            this._googleAuthSubject.next(user);
+            this._googleAuthSubject.complete();
+          },
+          error: (error) => this._googleAuthSubject.error(error),
+        });
       },
     });
   }
@@ -134,13 +156,14 @@ export class AuthService extends BaseApiService {
     this._$googleButtonWrapper.set(googleSignInButton);
   }
 
-  authenticateByGoogle(): void {
+  authenticateByGoogle(): Observable<IUser> {
     this._$googleButtonWrapper()?.click();
+    return this._googleAuthSubject.asObservable();
   }
 
-  googleSignIn(credential: string): Observable<IUser> {
+  googleSignIn(token: string): Observable<IUser> {
     this._$isLoading.set(true);
-    console.log('Google Login: ', credential);
+    console.log('Google Login: ', token);
 
     const user: IUser = {
       name: 'PrograMarc',
@@ -154,12 +177,12 @@ export class AuthService extends BaseApiService {
       })
     );
 
-    return this.post('google/signin', { credential });
+    return this.post('google/signin', { token });
   }
 
-  googleSignUp(credential: string): Observable<IUser> {
+  googleSignUp(token: string): Observable<IUser> {
     this._$isLoading.set(true);
-    console.log('Google Register: ', credential);
+    console.log('Google Register: ', token);
 
     const user: IUser = {
       name: 'PrograMarc',
@@ -180,13 +203,13 @@ export class AuthService extends BaseApiService {
     return new Observable((observer) => {
       FB.login(
         async (result: IFacebookDialogResponse) => {
-          const accessToken = result.authResponse.accessToken;
+          const token = result.authResponse.accessToken;
           let authObservable: Observable<IUser>;
 
           if (authAction === 'LOGIN') {
-            authObservable = this.facebookSignIn(accessToken);
+            authObservable = this.facebookSignIn(token);
           } else {
-            authObservable = this.facebookSignUp(accessToken);
+            authObservable = this.facebookSignUp(token);
           }
 
           authObservable.subscribe({
@@ -202,9 +225,9 @@ export class AuthService extends BaseApiService {
     });
   }
 
-  facebookSignIn(credential: string): Observable<IUser> {
+  facebookSignIn(token: string): Observable<IUser> {
     this._$isLoading.set(true);
-    console.log('Facebook Login: ', credential);
+    console.log('Facebook Login: ', token);
 
     const user: IUser = {
       name: 'PrograMarc',
@@ -221,9 +244,9 @@ export class AuthService extends BaseApiService {
     return this.post('facebook/signin');
   }
 
-  facebookSignUp(credential: string): Observable<IUser> {
+  facebookSignUp(token: string): Observable<IUser> {
     this._$isLoading.set(true);
-    console.log('Facebook Register: ', credential);
+    console.log('Facebook Register: ', token);
 
     const user: IUser = {
       name: 'PrograMarc',

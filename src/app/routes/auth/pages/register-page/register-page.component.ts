@@ -14,7 +14,6 @@ import { IRegisterData, IRegisterForm } from '@models/auth.interface';
 import { AuthFormComponent } from '@routes/auth/components/auth-form/auth-form.component';
 import { ControlErrorsDirective } from 'app/core/directives/control-error.directive';
 import { FormSubmitDirective } from 'app/core/directives/form-submit.directive';
-import { AuthFormErrorComponent } from '@routes/auth/components/auth-form-error/auth-form-error.component';
 import { AuthFormContainerComponent } from '@routes/auth/components/auth-form-container/auth-form-container.component';
 
 @Component({
@@ -24,7 +23,6 @@ import { AuthFormContainerComponent } from '@routes/auth/components/auth-form-co
     AuthFormContainerComponent,
     ButtonComponent,
     AuthFormComponent,
-    AuthFormErrorComponent,
     ReactiveFormsModule,
     ControlErrorsDirective,
     FormSubmitDirective,
@@ -91,8 +89,8 @@ export class RegisterPageComponent implements OnDestroy {
         next: (userData) => {
           this._authService.authenticateUser(userData);
         },
-        error: (err: IAuthError) => {
-          this.formError = err;
+        error: (error: IAuthError) => {
+          this._authService.setAuthError(error);
         },
       });
     }

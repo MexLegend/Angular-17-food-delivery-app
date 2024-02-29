@@ -18,10 +18,9 @@ import { FormValidators } from '@helpers/form-validators';
 import { ControlErrorsDirective } from 'app/core/directives/control-error.directive';
 import { FormSubmitDirective } from 'app/core/directives/form-submit.directive';
 import { RouterLink } from '@angular/router';
-import { AUTH_FORM_ERRORS, IAuthError } from '@models/error.interface';
+import { IAuthError } from '@models/error.interface';
 import { AuthService } from '@coreServices/common/auth.service';
 import { NgClass } from '@angular/common';
-import { AuthFormErrorComponent } from '@routes/auth/components/auth-form-error/auth-form-error.component';
 import { AuthFormContainerComponent } from '@routes/auth/components/auth-form-container/auth-form-container.component';
 
 @Component({
@@ -31,7 +30,6 @@ import { AuthFormContainerComponent } from '@routes/auth/components/auth-form-co
     AuthFormContainerComponent,
     ButtonComponent,
     AuthFormComponent,
-    AuthFormErrorComponent,
     ReactiveFormsModule,
     ControlErrorsDirective,
     FormSubmitDirective,
@@ -90,8 +88,8 @@ export class LoginPageComponent implements OnDestroy {
         next: (userData) => {
           this._authService.authenticateUser(userData);
         },
-        error: (err: IAuthError) => {
-          this.formError = err;
+        error: (error: IAuthError) => {
+          this._authService.setAuthError(error);
         },
       });
     }
