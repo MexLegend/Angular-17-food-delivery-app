@@ -1,14 +1,18 @@
 <div class="relative" (clickOutside)="isOpen.set(false)">
+  @if (hasCustomTrigger) {
+  <ng-content select="[trigger]" />
+  } @else {
   <button
     type="button"
     class="inline-flex items-center gap-x-2 transition-colors hover:text-primary"
     [ngClass]="{ 'text-primary': isOpen() }"
     aria-expanded="false"
-    (click)="toofleDropDown()"
+    (click)="toogleDropDown()"
   >
     <span>{{ label }}</span>
     <app-down-arrow-icon class="text-primary" [size]="12" />
   </button>
+  }
 
   <!--
       Flyout menu, show/hide based on flyout menu state.
@@ -23,13 +27,14 @@
   @if (isOpen()) {
   <div
     class="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4"
+    appPositionDropdown
   >
     <div
       class="w-screen flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5"
       [style.max-width.px]="size"
     >
       <div class="p-4">
-        <ng-content />
+        <ng-content select="[content]" />
       </div>
     </div>
   </div>

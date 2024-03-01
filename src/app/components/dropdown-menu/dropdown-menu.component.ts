@@ -6,27 +6,34 @@ import {
   Input,
   Output,
   WritableSignal,
+  booleanAttribute,
   signal,
 } from '@angular/core';
 import { ClickOutsideDirective } from 'app/core/directives/click-outside.directive';
+import { PositionDropdownDirective } from 'app/core/directives/position-dropdown.directive';
 import { DownArrowIconComponent } from 'app/icons/down-arrow-icon.component';
 
 @Component({
   selector: 'app-dropdown-menu',
   standalone: true,
-  imports: [ClickOutsideDirective, DownArrowIconComponent, NgClass],
+  imports: [
+    ClickOutsideDirective,
+    DownArrowIconComponent,
+    NgClass,
+    PositionDropdownDirective,
+  ],
   templateUrl: './dropdown-menu.component.html',
   styleUrl: './dropdown-menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DropdownMenuComponent {
   @Input() size: number = 448;
-  @Input({ required: true }) label!: string;
-  @Output() isMenuOpen = new EventEmitter<boolean>();
+  @Input() label?: string;
+  @Input({ transform: booleanAttribute }) hasCustomTrigger?: boolean;
 
   readonly isOpen: WritableSignal<boolean> = signal(false);
 
-  toofleDropDown() {
+  toogleDropDown() {
     this.isOpen.update((value) => !value);
   }
 }
