@@ -1,0 +1,17 @@
+<app-nav-menu-trigger
+  [label]="navMenuItem.label"
+  (clickEvent)="menu.toggle($event)"
+/>
+
+<p-menu
+  #menu
+  [model]="navMenuItem.menu"
+  [popup]="true"
+  [style.--menuSize.px]="448"
+>
+  <ng-template let-navMenuItem pTemplate="item">
+    <app-nav-menu-item [navMenuItem]="navMenuItem">
+      <app-check-icon></app-check-icon>
+    </app-nav-menu-item>
+  </ng-template>
+</p-menu>

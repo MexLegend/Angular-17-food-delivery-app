@@ -8,7 +8,7 @@ export const NAV_MENU: INavMenuItem[] = [
   {
     label: 'Services',
     link: 'services',
-    subMenu: [
+    menu: [
       {
         label: 'Easy To Order',
         link: 'easy-to-order',

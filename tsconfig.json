@@ -11,6 +11,7 @@
       "@coreServices/*": ["app/core/services/*"],
       "@components/*": ["app/components/*"],
       "@routes/*": ["app/routes/*"],
+      "@icons/*": ["app/icons/*"],
       "@environments/*": ["environments/*"],
     },
     "forceConsistentCasingInFileNames": true,

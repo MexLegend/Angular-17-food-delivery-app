@@ -1,0 +1,10 @@
+<button
+  type="button"
+  class="inline-flex items-center gap-x-2 transition-colors hover:text-primary"
+  [ngClass]="{ 'text-primary': true }"
+  aria-expanded="false"
+  (click)="clickEvent.next($event)"
+>
+  <span>{{ label }}</span>
+  <app-down-arrow-icon class="text-primary" [size]="12" />
+</button>

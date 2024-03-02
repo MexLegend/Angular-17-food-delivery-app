@@ -6,7 +6,6 @@ import {
   Signal,
   ViewChild,
   WritableSignal,
-  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -16,16 +15,13 @@ import { LogoutIconComponent } from 'app/icons/logout-icon.component';
 import { SearchIconComponent } from 'app/icons/search-icon.component';
 import { BagButtonComponent } from '../bag-button/bag-button.component';
 import { ButtonComponent } from '@components/button/button.component';
-import { NgClass, NgOptimizedImage } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { LogoComponent } from '@components/logo/logo.component';
-import { DropdownMenuComponent } from '@components/dropdown-menu/dropdown-menu.component';
-import { CATEGORIES } from '@constants/categories.constant';
-import { NavMenuItemComponent } from './components/nav-menu-item/nav-menu-item.component';
-import { INavMenuItem } from '@models/nav-menu-item.interface';
-import { CheckIconComponent } from 'app/icons/check-icon.component';
 import { UserService } from '@coreServices/common/user.service';
 import { UserMenuComponent } from './components/user-menu/user-menu.component';
 import { IUser } from '@models/user.interface';
+import { NavCategoriesMenuComponent } from './components/nav-categories-menu/nav-categories-menu.component';
+import { NavMenuSubmenuComponent } from './components/nav-menu-submenu/nav-menu-submenu.component';
 
 @Component({
   selector: 'app-navbar',
@@ -36,14 +32,12 @@ import { IUser } from '@models/user.interface';
     RouterLinkActive,
     LogoComponent,
     ButtonComponent,
-    DropdownMenuComponent,
-    NavMenuItemComponent,
+    NavMenuSubmenuComponent,
+    NavCategoriesMenuComponent,
     UserMenuComponent,
     LogoutIconComponent,
     BagButtonComponent,
     SearchIconComponent,
-    CheckIconComponent,
-    NgOptimizedImage,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
@@ -56,14 +50,6 @@ export class NavbarComponent {
   readonly userData: Signal<IUser | null> = this._userService.getUserData();
 
   readonly navMenu = [...NAV_MENU];
-  readonly categoriesMenu: Signal<INavMenuItem[]> = computed(() => {
-    const categories = [...CATEGORIES];
-    return categories.map((category) => ({
-      label: category.name,
-      link: `menu-`,
-      icon: category.icon,
-    }));
-  });
 
   readonly isScrolling: WritableSignal<boolean> = signal(false);
 

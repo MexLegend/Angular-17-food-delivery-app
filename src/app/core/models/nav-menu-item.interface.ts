@@ -3,5 +3,5 @@ export interface INavMenuItem {
   link: string;
   icon?: string;
   description?: string;
-  subMenu?: INavMenuItem[];
+  menu?: INavMenuItem[];
 }

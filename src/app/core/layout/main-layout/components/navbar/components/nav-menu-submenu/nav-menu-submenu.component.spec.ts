@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DropdownMenuComponent } from './dropdown-menu.component';
+import { NavMenuSubmenuComponent } from './nav-menu-submenu.component';
 
-describe('DropdownMenuComponent', () => {
-  let component: DropdownMenuComponent;
-  let fixture: ComponentFixture<DropdownMenuComponent>;
+describe('NavMenuSubmenuComponent', () => {
+  let component: NavMenuSubmenuComponent;
+  let fixture: ComponentFixture<NavMenuSubmenuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DropdownMenuComponent]
+      imports: [NavMenuSubmenuComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(DropdownMenuComponent);
+    fixture = TestBed.createComponent(NavMenuSubmenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

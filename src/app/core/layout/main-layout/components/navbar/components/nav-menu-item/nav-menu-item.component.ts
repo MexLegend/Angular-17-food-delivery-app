@@ -12,4 +12,5 @@ import { INavMenuItem } from '@models/nav-menu-item.interface';
 })
 export class NavMenuItemComponent {
   @Input({ required: true }) navMenuItem!: INavMenuItem;
+  @Input() customClasses?: string;
 }
