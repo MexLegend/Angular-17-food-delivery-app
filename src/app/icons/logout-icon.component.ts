@@ -5,6 +5,7 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   template: `
     <svg
+      class="ng-icon text-current"
       [style.width.px]="size"
       [style.height.px]="size"
       viewBox="0 0 24 24"

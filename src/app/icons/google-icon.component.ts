@@ -5,6 +5,7 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   template: `
     <svg
+      class="ng-icon"
       xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"

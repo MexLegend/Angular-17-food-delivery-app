@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-check-icon',
+  selector: 'app-marker-icon',
   standalone: true,
   template: `
     <svg
@@ -20,7 +20,14 @@ import { Component, Input } from '@angular/core';
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
-          d="M21 5L12 14L9 11M16 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V12"
+          d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+        <path
+          d="M12 22C16 18 20 14.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 14.4183 8 18 12 22Z"
           stroke="currentColor"
           stroke-width="2"
           stroke-linecap="round"
@@ -30,6 +37,6 @@ import { Component, Input } from '@angular/core';
     </svg>
   `,
 })
-export class CheckIconComponent {
+export class MarkerIconComponent {
   @Input() size: number = 24;
 }

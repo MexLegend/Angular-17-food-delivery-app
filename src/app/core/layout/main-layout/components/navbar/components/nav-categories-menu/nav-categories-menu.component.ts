@@ -6,10 +6,9 @@ import {
 } from '@angular/core';
 import { NavMenuTriggerComponent } from '../nav-menu-trigger/nav-menu-trigger.component';
 import { MenuModule } from 'primeng/menu';
-import { SharedModule } from 'primeng/api';
+import { MenuItem, SharedModule } from 'primeng/api';
 import { NavMenuItemComponent } from '../nav-menu-item/nav-menu-item.component';
 import { NgOptimizedImage } from '@angular/common';
-import { INavMenuItem } from '@models/nav-menu-item.interface';
 import { CATEGORIES } from '@constants/categories.constant';
 
 @Component({
@@ -27,12 +26,12 @@ import { CATEGORIES } from '@constants/categories.constant';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavCategoriesMenuComponent {
-  readonly categoriesMenu: Signal<INavMenuItem[]> = computed(() => {
+  readonly categoriesMenu: Signal<MenuItem[]> = computed(() => {
     const categories = [...CATEGORIES];
     return categories.map((category) => ({
       label: category.name,
-      link: `menu-`,
+      routerLink: `menu-`,
       icon: category.icon,
-    }));
+    })) as MenuItem[];
   });
 }

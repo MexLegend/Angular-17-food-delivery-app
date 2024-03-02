@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-location-icon',
+  selector: 'app-orders-icon',
   standalone: true,
   template: `
     <svg
@@ -20,23 +20,39 @@ import { Component, Input } from '@angular/core';
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
-          d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z"
+          d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15"
           stroke="currentColor"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
         ></path>
         <path
-          d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"
+          d="M12 12H15"
           stroke="currentColor"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
         ></path>
+        <path
+          d="M12 16H15"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+        <path
+          d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+        <circle cx="9" cy="12" r="1" fill="currentColor"></circle>
+        <circle cx="9" cy="16" r="1" fill="currentColor"></circle>
       </g>
     </svg>
   `,
 })
-export class LocationIconComponent {
+export class OrdersIconComponent {
   @Input() size: number = 24;
 }

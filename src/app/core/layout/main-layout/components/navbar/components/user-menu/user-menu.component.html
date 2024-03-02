@@ -1,7 +1,7 @@
 <button
   pButton
   type="button"
-  class="flex items-center justify-center size-12 transition-all active:scale-95 rounded-full"
+  class="flex items-center justify-center size-12 p-[6px] transition-all active:scale-95 rounded-full"
   (click)="menu.toggle($event)"
 >
   @if (userData.image) {
@@ -17,7 +17,7 @@
   </figure>
   } @else { @if(userData.name | userInitialsAvatar; as userAvatar){
   <div
-    class="flex items-center justify-center size-10 rounded-full text-white"
+    class="flex items-center justify-center size-full rounded-full text-white"
     [style.background-color]="userAvatar.bgColor"
   >
     <span class="uppercase text-xl">
@@ -27,4 +27,32 @@
   } }
 </button>
 
-<p-menu #menu [model]="userMenu" [popup]="true" [style.--menuSize.px]="300" />
+<p-menu
+  id="userMenu"
+  #menu
+  [model]="userMenu()"
+  [popup]="true"
+  [style.--menuSize.px]="300"
+>
+  <ng-template let-userMenuItem pTemplate="item">
+    @if (userMenuItem.routerLink) {
+    <a
+      href=""
+      [attr.tabindex]="-1"
+      [routerLink]="userMenuItem.routerLink"
+      routerLinkActive="text-primary"
+      class="p-menuitem-link flex items-center"
+    >
+      <app-ng-icon [iconName]="userMenuItem.customIcon" />
+      <span>{{ userMenuItem.label }}</span>
+    </a>
+    } @else if (userMenuItem.command) {
+    <button [attr.tabindex]="-1" class="p-menuitem-link flex items-center">
+      <app-ng-icon [iconName]="userMenuItem.customIcon" />
+      <span>{{ userMenuItem.label }}</span>
+    </button>
+    } @else {
+    <p-divider class="my-2" />
+    }
+  </ng-template>
+</p-menu>

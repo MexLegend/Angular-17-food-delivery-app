@@ -1,11 +1,11 @@
 <app-nav-menu-trigger
-  [label]="navMenuItem.label"
+  [label]="navMenuItem.label!"
   (clickEvent)="menu.toggle($event)"
 />
 
 <p-menu
   #menu
-  [model]="navMenuItem.menu"
+  [model]="navMenuList()"
   [popup]="true"
   [style.--menuSize.px]="448"
 >

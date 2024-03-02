@@ -1,10 +1,16 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  Signal,
+  computed,
+} from '@angular/core';
 import { NavMenuTriggerComponent } from '../nav-menu-trigger/nav-menu-trigger.component';
 import { MenuModule } from 'primeng/menu';
 import { NavMenuItemComponent } from '../nav-menu-item/nav-menu-item.component';
 import { CheckIconComponent } from '@icons/check-icon.component';
 import { INavMenuItem } from '@models/nav-menu-item.interface';
-import { SharedModule } from 'primeng/api';
+import { SharedModule, MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-nav-menu-submenu',
@@ -22,4 +28,7 @@ import { SharedModule } from 'primeng/api';
 })
 export class NavMenuSubmenuComponent {
   @Input({ required: true }) navMenuItem!: INavMenuItem;
+  readonly navMenuList: Signal<MenuItem[]> = computed(() => {
+    return this.navMenuItem.menu as MenuItem[];
+  });
 }

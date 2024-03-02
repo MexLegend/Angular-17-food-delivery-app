@@ -5,6 +5,7 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   template: `
     <svg
+      class="ng-icon"
       [style.width.px]="size"
       [style.height.px]="size"
       viewBox="0 0 24 24"
@@ -26,7 +27,6 @@ import { Component, Input } from '@angular/core';
           stroke-linejoin="round"
         ></path>
       </g>
-      
     </svg>
   `,
 })

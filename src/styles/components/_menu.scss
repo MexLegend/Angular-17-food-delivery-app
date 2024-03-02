@@ -2,10 +2,18 @@
   @apply w-full max-w-[var(--menuSize)] max-sm:max-w-[calc(100%-30px)] p-4 mt-2 flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5;
 
   .p-menuitem {
-    @apply relative flex items-center gap-x-6 w-full rounded-lg p-4 transition-all duration-200 hover:bg-slate-100 active:scale-95;
+    @apply relative flex items-center gap-x-6 w-full rounded-lg transition-all duration-200 hover:bg-slate-100 active:scale-95;
 
     .p-menuitem-content {
       @apply w-full;
+
+      .p-menuitem-link {
+        @apply p-4 gap-2;
+
+        .ng-icon {
+          @apply opacity-70;
+        }
+      }
     }
   }
 }
