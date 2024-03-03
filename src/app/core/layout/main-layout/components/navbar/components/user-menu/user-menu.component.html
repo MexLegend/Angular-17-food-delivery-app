@@ -4,27 +4,7 @@
   class="flex items-center justify-center size-12 p-[6px] transition-all active:scale-95 rounded-full"
   (click)="menu.toggle($event)"
 >
-  @if (userData.image) {
-  <figure
-    class="relative size-full transition-colors hover:bg-slate-100 rounded-full overflow-hidden"
-  >
-    <img
-      class="object-cover"
-      [ngSrc]="userData.image"
-      [alt]="'user-avatar-' + userData.name"
-      priority
-    />
-  </figure>
-  } @else { @if(userData.name | userInitialsAvatar; as userAvatar){
-  <div
-    class="flex items-center justify-center size-full rounded-full text-white"
-    [style.background-color]="userAvatar.bgColor"
-  >
-    <span class="uppercase text-xl">
-      {{ userAvatar.initials }}
-    </span>
-  </div>
-  } }
+  <app-user-avatar [userData]="userData" class="flex size-full" />
 </button>
 
 <p-menu
@@ -35,9 +15,20 @@
   [style.--menuSize.px]="300"
 >
   <ng-template let-userMenuItem pTemplate="item">
-    @if (userMenuItem.routerLink) {
+    @if (userMenuItem.label === "userProfile") {
+    <a routerLink="user_profile" class="p-menuitem-link flex !px-2">
+      <article class="flex items-center gap-3">
+        <figure class="flex flex-shrink size-14">
+          <app-user-avatar [userData]="userData" class="flex size-full" />
+        </figure>
+        <div class="flex flex-1 flex-col">
+          <h3 class="font-medium line-clamp-1">{{ userData.name }}</h3>
+          <p class="opacity-70 text-xs line-clamp-1">{{ userData.email }}</p>
+        </div>
+      </article>
+    </a>
+    }@else if (userMenuItem.routerLink) {
     <a
-      href=""
       [attr.tabindex]="-1"
       [routerLink]="userMenuItem.routerLink"
       routerLinkActive="text-primary"

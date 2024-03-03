@@ -1,4 +1,3 @@
-import { NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,7 +6,6 @@ import {
   computed,
 } from '@angular/core';
 import { IUser } from '@models/user.interface';
-import { UserInitialsAvatarPipe } from 'app/core/pipes/user-initials-avatar.pipe';
 import { USER_MENU } from '@constants/user-menu.constant';
 import { MenuModule } from 'primeng/menu';
 import { DividerModule } from 'primeng/divider';
@@ -16,13 +14,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIconComponent } from '@icons/ng-icon/ng-icon.component';
 import { inject } from '@angular/core';
 import { AuthService } from '@coreServices/common/auth.service';
+import { UserAvatarComponent } from '@components/user-avatar/user-avatar.component';
 
 @Component({
   selector: 'app-user-menu',
   standalone: true,
   imports: [
-    NgOptimizedImage,
-    UserInitialsAvatarPipe,
+    UserAvatarComponent,
     NgIconComponent,
     MenuModule,
     SharedModule,
@@ -51,6 +49,19 @@ export class UserMenuComponent {
       separator: menuItem.separator,
     })) as MenuItem[];
 
+    // Add user profile option
+    userMenuFormated.unshift(
+      ...[
+        {
+          label: 'userProfile',
+        },
+        {
+          separator: true,
+        },
+      ]
+    );
+
+    // Add Switch accounts and sign out options
     userMenuFormated.push(
       ...[
         {
