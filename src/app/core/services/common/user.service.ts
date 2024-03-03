@@ -24,21 +24,6 @@ export class UserService {
     return this._$user.asReadonly();
   }
 
-  isLoggedIn(): boolean {
-    return !!this._$user();
-  }
-
-  loadUserFromStorage() {
-    const userFromStorage = this._storageService.getItem<IUser>(
-      KEY_STORAGE.DATA_USER
-    );
-    if (userFromStorage) {
-      this._$user.set(userFromStorage);
-    }
-
-    return userFromStorage;
-  }
-
   updateStorage(userData: IUser): void {
     this._storageService.setItem(KEY_STORAGE.DATA_USER, userData);
   }

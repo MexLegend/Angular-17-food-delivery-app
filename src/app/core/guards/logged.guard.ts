@@ -1,13 +1,13 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AUTH_REDIRECT } from '@constants/auth-redirect.constant';
-import { UserService } from '@coreServices/common/user.service';
+import { AuthService } from '@coreServices/common/auth.service';
 
 export const loggedGuard: CanActivateFn = (route, state) => {
-  const userService = inject(UserService);
+  const authService = inject(AuthService);
   const router = inject(Router);
 
-  const isLoggedIn = userService.isLoggedIn();
+  const isLoggedIn = authService.isLoggedIn();
 
   if (!isLoggedIn) {
     return router.navigate(['auth'], {

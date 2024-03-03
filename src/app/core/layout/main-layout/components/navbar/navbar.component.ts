@@ -47,10 +47,9 @@ export class NavbarComponent {
   @ViewChild('navbar', { static: false }) navbar?: ElementRef<HTMLElement>;
 
   private readonly _userService = inject(UserService);
+
   readonly userData: Signal<IUser | null> = this._userService.getUserData();
-
   readonly navMenu = [...NAV_MENU];
-
   readonly isScrolling: WritableSignal<boolean> = signal(false);
 
   @HostListener('window:scroll')

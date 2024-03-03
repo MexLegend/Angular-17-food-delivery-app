@@ -4,10 +4,10 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
-import { UserService } from '@coreServices/common/user.service';
+import { AuthService } from '@coreServices/common/auth.service';
 
-const loadUserFromStorage = (userService: UserService) => {
-  return () => userService.loadUserFromStorage();
+const loadUserFromStorage = (authService: AuthService) => {
+  return () => authService.loadUserFromStorage();
 };
 
 export const appConfig: ApplicationConfig = {
@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: APP_INITIALIZER,
       useFactory: loadUserFromStorage,
-      deps: [UserService],
+      deps: [AuthService],
       multi: true,
     },
   ],

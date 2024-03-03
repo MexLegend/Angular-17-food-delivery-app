@@ -31,8 +31,11 @@ export class AuthService extends BaseApiService {
   private readonly _router = inject(Router);
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _ngZone = inject(NgZone);
+
   private readonly _storageService = inject(LocalStorageService);
   private readonly _userService = inject(UserService);
+
+  private readonly _$isLoggedIn: WritableSignal<boolean> = signal(false);
   private readonly _$isLoading: WritableSignal<boolean> = signal(false);
   private readonly _$authError: WritableSignal<IAuthError | null> =
     signal(null);
@@ -42,6 +45,23 @@ export class AuthService extends BaseApiService {
 
   constructor() {
     super('auth');
+  }
+
+  loadUserFromStorage() {
+    const userFromStorage = this._storageService.getItem<IUser>(
+      KEY_STORAGE.DATA_USER
+    );
+
+    if (userFromStorage) {
+      this._userService.setUserData(userFromStorage);
+      this._$isLoggedIn.set(true);
+    }
+
+    return userFromStorage;
+  }
+
+  isLoggedIn(): boolean {
+    return this._$isLoggedIn();
   }
 
   getIsLoading(): Signal<boolean> {
@@ -96,11 +116,21 @@ export class AuthService extends BaseApiService {
     return this.post('signup');
   }
 
-  logout(): Observable<void> {
+  signOut(): Observable<void> {
     return new Observable((observer) => {
-      FB.logout();
-      this._storageService.removeItem(KEY_STORAGE.DATA_USER);
-      this._userService.setUserData(null);
+      // Logout from Facebook if a token exists
+      if (FB.getAccessToken() != null) {
+        FB.logout();
+      }
+      // Logout from Google
+      google.accounts.id.disableAutoSelect();
+
+      this._$isLoggedIn.set(false);
+      this._router.navigateByUrl('/auth').then(() => {
+        this._storageService.removeItem(KEY_STORAGE.DATA_USER);
+        this._userService.setUserData(null);
+      });
+
       observer.next();
       observer.complete();
     });
@@ -112,6 +142,7 @@ export class AuthService extends BaseApiService {
 
     this._userService.setUserData(userData);
     this._storageService.setItem(KEY_STORAGE.DATA_USER, userData);
+    this._$isLoggedIn.set(true);
     this._router.navigateByUrl(redirectUrl || '/');
   }
 
@@ -133,15 +164,14 @@ export class AuthService extends BaseApiService {
           let authObservable: Observable<IUser>;
 
           if (authAction === 'LOGIN') {
-            authObservable = this.googleSignIn(token);
+            authObservable = this._googleSignIn(token);
           } else {
-            authObservable = this.googleSignUp(token);
+            authObservable = this._googleSignUp(token);
           }
 
           authObservable.subscribe({
             next: (user) => {
               this._googleAuthSubject.next(user);
-              this._googleAuthSubject.complete();
             },
             error: (error) => this._googleAuthSubject.error(error),
           });
@@ -170,7 +200,7 @@ export class AuthService extends BaseApiService {
     return this._googleAuthSubject.asObservable();
   }
 
-  googleSignIn(token: string): Observable<IUser> {
+  private _googleSignIn(token: string): Observable<IUser> {
     this._$isLoading.set(true);
     console.log('Google Login: ', token);
 
@@ -189,7 +219,7 @@ export class AuthService extends BaseApiService {
     return this.post('google/signin', { token });
   }
 
-  googleSignUp(token: string): Observable<IUser> {
+  private _googleSignUp(token: string): Observable<IUser> {
     this._$isLoading.set(true);
     console.log('Google Register: ', token);
 
@@ -210,16 +240,16 @@ export class AuthService extends BaseApiService {
 
   authenticateByFacebook(authAction: AuthActionType): Observable<IUser> {
     return new Observable((observer) => {
-      this._ngZone.run(() => {
-        FB.login(
-          async (result: IFacebookDialogResponse) => {
+      FB.login(
+        async (result: IFacebookDialogResponse) => {
+          this._ngZone.run(() => {
             const token = result.authResponse.accessToken;
             let authObservable: Observable<IUser>;
 
             if (authAction === 'LOGIN') {
-              authObservable = this.facebookSignIn(token);
+              authObservable = this._facebookSignIn(token);
             } else {
-              authObservable = this.facebookSignUp(token);
+              authObservable = this._facebookSignUp(token);
             }
 
             authObservable.subscribe({
@@ -229,14 +259,14 @@ export class AuthService extends BaseApiService {
               },
               error: (error) => observer.error(error),
             });
-          },
-          { scope: 'email' }
-        );
-      });
+          });
+        },
+        { scope: 'email' }
+      );
     });
   }
 
-  facebookSignIn(token: string): Observable<IUser> {
+  private _facebookSignIn(token: string): Observable<IUser> {
     this._$isLoading.set(true);
     console.log('Facebook Login: ', token);
 
@@ -255,7 +285,7 @@ export class AuthService extends BaseApiService {
     return this.post('facebook/signin');
   }
 
-  facebookSignUp(token: string): Observable<IUser> {
+  private _facebookSignUp(token: string): Observable<IUser> {
     this._$isLoading.set(true);
     console.log('Facebook Register: ', token);
 

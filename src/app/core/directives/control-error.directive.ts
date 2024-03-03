@@ -21,7 +21,7 @@ import { AutoDestroyService } from '@coreServices/utils/auto-destroy.service';
 export class ControlErrorsDirective implements OnInit {
   private readonly _ngControl = inject(NgControl);
   private readonly _form = inject(FormSubmitDirective, { optional: true });
-  private readonly _destroy = inject(AutoDestroyService);
+  private readonly _autoDestroyService = inject(AutoDestroyService);
   private readonly _elementRef: ElementRef<HTMLElement> = inject(ElementRef);
   private readonly _vcr = inject(ViewContainerRef);
 
@@ -35,7 +35,7 @@ export class ControlErrorsDirective implements OnInit {
 
   ngOnInit(): void {
     merge(this._submit$, this._blurEvent$, this._ngControl.statusChanges!)
-      .pipe(takeUntil(this._destroy))
+      .pipe(takeUntil(this._autoDestroyService))
       .subscribe(() => {
         const errorControl = getFormControlError(this._ngControl.control!);
         this.setError(errorControl);
